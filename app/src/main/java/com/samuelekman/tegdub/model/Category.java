@@ -5,6 +5,7 @@ package com.samuelekman.tegdub.model;
  */
 
 public class Category {
-    private String name;
+    private String categoryName;
     private String color;
+    private String subCategory;
 }
