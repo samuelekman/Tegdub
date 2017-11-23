@@ -5,7 +5,15 @@ package com.samuelekman.tegdub.model;
  */
 
 public class Category {
-    private String categoryName;
     private String color;
     private String subCategory;
+    private String icon;
+    MainCategory mainCategory;
+
+
+    public Category(MainCategory mainCategory, String subCategory){
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
+
+    }
 }
