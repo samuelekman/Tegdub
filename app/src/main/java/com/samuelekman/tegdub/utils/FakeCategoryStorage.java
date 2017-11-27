@@ -11,10 +11,10 @@ import java.util.ArrayList;
  */
 
 public class FakeCategoryStorage implements CategoryStore {
-    ArrayList<Category> getCategoryList(){
+        public ArrayList<Category> getCategoryList(){
         ArrayList<Category> dummyList = new ArrayList<Category>();
         dummyList.add(new Category(MainCategory.HOBBY,"Painting"));
         dummyList.add(new Category(MainCategory.HOBBY,"Painting"));
-
+        return dummyList;
     }
 }

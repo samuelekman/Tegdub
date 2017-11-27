@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.app.DatePickerDialog;
+import android.widget.EditText;
 
 import java.util.Calendar;
 
-import static com.samuelekman.tegdub.R.id.dateButton;
+
+import static com.samuelekman.tegdub.R.id.ammountTextField;
 
 public class CreateEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -21,8 +23,9 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
 
-        final Button dateButton = (Button) findViewById(R.id.dateButton);
-        dateButton.setOnClickListener(new View.OnClickListener(){
+        final EditText dateTextField = (EditText) findViewById(R.id.dateTextField);
+        dateTextField.setHint("Today");
+        dateTextField.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 showDatePicker();
             }
