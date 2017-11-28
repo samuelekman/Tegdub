@@ -11,4 +11,5 @@ public class Transaction {
     private String owner;
     private Date date;
     private String note;
+    private Category category;
 }

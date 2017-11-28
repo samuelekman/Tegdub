@@ -23,20 +23,27 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
 
+        final EditText categoryTextField = (EditText) findViewById(R.id.categoryTextField);
+        categoryTextField.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                selectCategory(v);
+            }
+        });
+
         final EditText dateTextField = (EditText) findViewById(R.id.dateTextField);
-        dateTextField.setHint("Today");
+        dateTextField.setHint("Today"); // Unnecesary - Remove and make a today date object
         dateTextField.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 showDatePicker();
             }
         });
 
-        final Button categoryButton = (Button) findViewById(R.id.categoryButton);
+       /* final Button categoryButton = (Button) findViewById(R.id.categoryButton);
         categoryButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 selectCategory(v);
             }
-            });
+            }); */
 
     }
 

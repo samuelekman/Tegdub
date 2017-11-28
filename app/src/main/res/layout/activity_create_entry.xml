@@ -26,28 +26,14 @@
         android:layout_marginTop="8dp" />
 
     <Button
-        android:id="@+id/categoryButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Category"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        tools:layout_editor_absoluteY="206dp" />
-
-    <Button
         android:id="@+id/saveTransactionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
         android:drawableLeft="@drawable/ic_done_black_24dp"
+        tools:layout_editor_absoluteX="148dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:layout_marginBottom="8dp" />
 
     <EditText
         android:id="@+id/noteTextField"
@@ -57,36 +43,42 @@
         android:inputType="textPersonName"
         android:hint="Note"
         android:drawableLeft="@drawable/ic_event_note_black_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="159dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/categoryButton"
-        app:layout_constraintVertical_bias="0.134"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextField"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/dateTextField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:ems="10"
         android:focusable="false"
         android:inputType="date"
-        android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
-        app:layout_constraintTop_toBottomOf="@+id/noteTextField"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/categoryTextField"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <EditText
         android:id="@+id/categoryTextField"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        android:layout_marginTop="12dp"
+        android:hint="Category"
+        android:drawableLeft="@drawable/ic_folder_black_24dp"
+        android:focusable="false"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/ammountTextField"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.503" />
 </android.support.constraint.ConstraintLayout>
