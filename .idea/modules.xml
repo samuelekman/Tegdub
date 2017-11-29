@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Tegdub.iml" filepath="$PROJECT_DIR$/Tegdub.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Tegdub.iml" filepath="$PROJECT_DIR$/.idea/Tegdub.iml" />
+      <module fileurl="file://C:\Users\Sammi\AndroidStudioProjects\Tegdub\Tegdub.iml" filepath="C:\Users\Sammi\AndroidStudioProjects\Tegdub\Tegdub.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Sammi\AndroidStudioProjects\Tegdub\app\app.iml" filepath="C:\Users\Sammi\AndroidStudioProjects\Tegdub\app\app.iml" />
     </modules>
   </component>
 </project>

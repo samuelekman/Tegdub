@@ -4,9 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.samuelekman.tegdub.Interfaces.HeaderItem;
 import com.samuelekman.tegdub.Interfaces.ListItem;
+import com.samuelekman.tegdub.model.Category;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,26 +66,32 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case ListItem.TYPE_CATEGORY:
                 CategoryItem categoryItem = (CategoryItem) mListItem.get(position);
                 CategoryViewHolder categoryViewHolder = (CategoryViewHolder) viewHolder;
+                categoryViewHolder.txtCat.setText(categoryItem.getCategory().getSubCategory());
 
                 break;
 
             case ListItem.TYPE_HEADER:
                 HeaderItem headerItem = (HeaderItem) mListItem.get(position);
                 HeaderViewHolder headerViewHolder = (HeaderViewHolder) viewHolder;
+                headerViewHolder.txtHead.setText(headerItem.getHeader());
 
                 break;
         }
     }
 
     private class CategoryViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCat;
         public CategoryViewHolder(View v) {
             super(v);
+            txtCat = (TextView) itemView.findViewById(R.id.listItemTxtView);
         }
     }
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder {
+        TextView txtHead;
         public HeaderViewHolder(View v) {
             super(v);
+            txtHead = (TextView) itemView.findViewById(R.id.headerTxtView);
         }
     }
 }

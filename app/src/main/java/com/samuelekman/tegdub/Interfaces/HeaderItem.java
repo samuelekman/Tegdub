@@ -17,4 +17,8 @@ public class HeaderItem extends ListItem{
     public HeaderItem(String mainCategory){
         this.mainCategory = mainCategory;
     }
+
+    public String getHeader(){
+        return mainCategory;
+    }
 }
