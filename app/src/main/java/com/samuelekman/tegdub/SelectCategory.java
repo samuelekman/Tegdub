@@ -2,6 +2,7 @@ package com.samuelekman.tegdub;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -26,6 +27,7 @@ public class SelectCategory extends AppCompatActivity {
 
     RecyclerView recView;
     GroupedListAdapter adapter;
+    GridLayoutManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,24 @@ public class SelectCategory extends AppCompatActivity {
         adapter = new GroupedListAdapter(this, mListItems);
         recView = (RecyclerView) findViewById(R.id.listWithCategory);
         recView.setAdapter(adapter);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        manager = new GridLayoutManager(this, 2);
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+            @Override
+            public int getSpanSize(int position) {
+                switch (adapter.getItemViewType(position)){
+                    case ListItem.TYPE_HEADER:
+                        return manager.getSpanCount();
+
+                    case ListItem.TYPE_CATEGORY:
+                        return 1;
+
+                    default:
+                        return -1;
+                }
+            }
+                                  });
+        recView.setLayoutManager(manager);
+
     }
 
     public List<ListItem> makeListItems(TreeMap<String, List<Category>> tMap){

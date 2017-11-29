@@ -66,7 +66,6 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case ListItem.TYPE_CATEGORY:
                 CategoryItem categoryItem = (CategoryItem) mListItem.get(position);
                 CategoryViewHolder categoryViewHolder = (CategoryViewHolder) viewHolder;
-                System.out.println(categoryItem.getCategory().getSubCategory());
                 categoryViewHolder.txtCat.setText(categoryItem.getCategory().getSubCategory());
 
                 break;
