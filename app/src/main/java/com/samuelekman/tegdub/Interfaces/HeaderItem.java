@@ -7,14 +7,14 @@ import com.samuelekman.tegdub.model.MainCategory;
  */
 
 public class HeaderItem extends ListItem{
-    private MainCategory mainCategory;
+    private String mainCategory;
 
     @Override
     public int getType() {
         return TYPE_HEADER;
     }
 
-    public HeaderItem(MainCategory mainCategory){
+    public HeaderItem(String mainCategory){
         this.mainCategory = mainCategory;
     }
 }

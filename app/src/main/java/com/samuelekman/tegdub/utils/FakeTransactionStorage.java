@@ -15,5 +15,7 @@ public class FakeTransactionStorage implements TransactionStore {
     return null;
     }
 
-    public void addToTransactionList();
+    public void addToTransactionList() {
+
+    };
 }

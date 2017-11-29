@@ -22,5 +22,11 @@ public class Category {
         return icon;
     }
 
+    public String getSubCategory(){
+        return subCategory;
+    }
 
+    public MainCategory getMainCategory(){
+        return mainCategory;
+    }
 }

@@ -16,6 +16,7 @@ public class FakeCategoryStorage implements CategoryStore {
         ArrayList<Category> dummyList = new ArrayList<Category>();
         dummyList.add(new Category(MainCategory.HOBBY,"Painting", R.drawable.ic_format_paint_black_24dp));
         dummyList.add(new Category(MainCategory.HOME,"Furniture", R.drawable.ic_local_hotel_black_24dp));
+        dummyList.add(new Category(MainCategory.HOME,"Sleep", R.drawable.ic_format_paint_black_24dp));
         return dummyList;
     }
 
