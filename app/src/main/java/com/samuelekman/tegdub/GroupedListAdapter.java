@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.samuelekman.tegdub.Interfaces.HeaderItem;
@@ -67,6 +68,7 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 CategoryItem categoryItem = (CategoryItem) mListItem.get(position);
                 CategoryViewHolder categoryViewHolder = (CategoryViewHolder) viewHolder;
                 categoryViewHolder.txtCat.setText(categoryItem.getCategory().getSubCategory());
+                categoryViewHolder.imgCat.setImageResource(categoryItem.getCategory().getIcon());
 
                 break;
 
@@ -81,9 +83,11 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     private class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView txtCat;
+        ImageView imgCat;
         public CategoryViewHolder(View v) {
             super(v);
             txtCat = (TextView) itemView.findViewById(R.id.listItemTxtView);
+            imgCat = (ImageView) itemView.findViewById(R.id.listItemImgView);
         }
     }
 
