@@ -45,7 +45,12 @@ public class SelectCategory extends AppCompatActivity {
             }
         }
         List<ListItem> mListItems = makeListItems(treeMap);
-        adapter = new GroupedListAdapter(this, mListItems);
+        adapter = new GroupedListAdapter(this, mListItems, new GroupedListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Category category) {
+                System.out.println("got here");
+            }
+        });
         recView = (RecyclerView) findViewById(R.id.listWithCategory);
         recView.setAdapter(adapter);
         manager = new GridLayoutManager(this, 2);
@@ -67,7 +72,7 @@ public class SelectCategory extends AppCompatActivity {
         recView.setLayoutManager(manager);
 
     }
-    
+
     public List<ListItem> makeListItems(TreeMap<String, List<Category>> tMap){
         List<ListItem> mListItems = new ArrayList<>();
 
