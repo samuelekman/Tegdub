@@ -102,7 +102,6 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override public void onClick(View v){
                     listener.onItemClick(category);
-                    System.out.println(category);
                 }
             });
         }

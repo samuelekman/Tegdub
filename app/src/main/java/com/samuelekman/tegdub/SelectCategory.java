@@ -28,6 +28,7 @@ public class SelectCategory extends AppCompatActivity {
     RecyclerView recView;
     GroupedListAdapter adapter;
     GridLayoutManager manager;
+    Category cTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,9 @@ public class SelectCategory extends AppCompatActivity {
         adapter = new GroupedListAdapter(this, mListItems, new GroupedListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Category category) {
-                System.out.println("got here");
+
+                cTemp = category;
+                onBackPressed();
             }
         });
         recView = (RecyclerView) findViewById(R.id.listWithCategory);
@@ -86,5 +89,11 @@ public class SelectCategory extends AppCompatActivity {
             }
         }
         return mListItems;
+    }
+
+    public void onBackPressed(){
+        getIntent().putExtra("Dunno", cTemp.getSubCategory());
+        this.setResult(RESULT_OK, getIntent());
+        super.onBackPressed();
     }
 }

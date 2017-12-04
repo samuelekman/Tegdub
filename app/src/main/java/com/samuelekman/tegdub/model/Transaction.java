@@ -7,9 +7,16 @@ import java.util.Date;
  */
 
 public class Transaction {
-    private int sum;
-    private String owner;
+    private double sum;
+    //private String owner;
     private Date date;
     private String note;
     private Category category;
+
+
+    public Transaction(double sum, Date date, Category category){
+        this.sum = sum;
+        this.date = date;
+        this.category = category;
+    }
 }

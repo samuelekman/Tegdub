@@ -1,5 +1,6 @@
 package com.samuelekman.tegdub;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
@@ -11,26 +12,35 @@ import android.widget.DatePicker;
 import android.app.DatePickerDialog;
 import android.widget.EditText;
 
+import com.samuelekman.tegdub.model.Category;
+import com.samuelekman.tegdub.model.Transaction;
+
 import java.util.Calendar;
 
 
 import static com.samuelekman.tegdub.R.id.ammountTextField;
+import static com.samuelekman.tegdub.R.id.categoryTextField;
+import static com.samuelekman.tegdub.R.id.dateTextField;
 
 public class CreateEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    static final int REQUEST_CODE = 1;
+    EditText categoryTextField;
+    EditText dateTextField;
+    EditText sumTextField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
 
-        final EditText categoryTextField = (EditText) findViewById(R.id.categoryTextField);
+        categoryTextField = (EditText) findViewById(R.id.categoryTextField);
         categoryTextField.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 selectCategory(v);
             }
         });
 
-        final EditText dateTextField = (EditText) findViewById(R.id.dateTextField);
+        dateTextField = (EditText) findViewById(R.id.dateTextField);
         dateTextField.setHint("Today"); // Unnecesary - Remove and make a today date object
         dateTextField.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
@@ -38,18 +48,26 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             }
         });
 
-       /* final Button categoryButton = (Button) findViewById(R.id.categoryButton);
-        categoryButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                selectCategory(v);
-            }
-            }); */
+        sumTextField = (EditText) findViewById(R.id.ammountTextField);
+
 
     }
 
+
     public void selectCategory(View v) {
         Intent intent = new Intent(this, SelectCategory.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        if (requestCode == REQUEST_CODE){
+            if (resultCode == Activity.RESULT_OK){
+                String objectData = data.getStringExtra("Dunno");
+                System.out.println("FÅr tillbaka detta"+ objectData);
+                categoryTextField.setText(objectData);
+            }
+            // HÄr kommer resultatet parsas
+        }
     }
 
     public void showDatePicker(){
@@ -79,6 +97,14 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
         }
+    }
+
+    public Transaction buildTransactionObject(){
+        Transaction transaction = new Transaction(
+                Double.parseDouble(sumTextField.getText().toString());
+                dateTextField
+
+        );
     }
  }
 
