@@ -16,6 +16,7 @@ import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.Transaction;
 
 import java.util.Calendar;
+import java.util.Date;
 
 
 import static com.samuelekman.tegdub.R.id.ammountTextField;
@@ -24,9 +25,10 @@ import static com.samuelekman.tegdub.R.id.dateTextField;
 
 public class CreateEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     static final int REQUEST_CODE = 1;
-    EditText categoryTextField;
-    EditText dateTextField;
-    EditText sumTextField;
+    private EditText categoryTextField;
+    private EditText dateTextField;
+    private EditText sumTextField;
+    private Calendar selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,10 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
                 selectCategory(v);
             }
         });
-
+        Calendar c = new Calendar();
+        changeDate(c);
         dateTextField = (EditText) findViewById(R.id.dateTextField);
-        dateTextField.setHint("Today"); // Unnecesary - Remove and make a today date object
+        //dateTextField.setText(c.toString()); // Let's see how this works.
         dateTextField.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 showDatePicker();
@@ -51,8 +54,12 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         sumTextField = (EditText) findViewById(R.id.ammountTextField);
 
 
-    }
 
+    }
+    public void changeDate(Calendar date){
+        this.selectedDate = date;
+        dateTextField.setText(date.toString());
+    }
 
     public void selectCategory(View v) {
         Intent intent = new Intent(this, SelectCategory.class);
@@ -70,6 +77,8 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         }
     }
 
+
+
     public void showDatePicker(){
         DialogFragment newFragment = new DatePickerFragment();
             newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -81,6 +90,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    private CreateEntry parent;
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -95,9 +105,18 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            Calendar date = Calendar.getInstance();
+            date.set(Calendar.YEAR, year);
+            date.set(Calendar.MONTH, month);
+            date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
         }
+        public void setParent(CreateEntry fragment){
+            this.parent = fragment;
+        }
+
     }
+
 
     public Transaction buildTransactionObject(){
         Transaction transaction = new Transaction(
