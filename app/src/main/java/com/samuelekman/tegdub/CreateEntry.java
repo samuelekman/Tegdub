@@ -41,7 +41,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
                 selectCategory(v);
             }
         });
-        Calendar c = new Calendar();
+        Calendar c = Calendar.getInstance();
         changeDate(c);
         dateTextField = (EditText) findViewById(R.id.dateTextField);
         //dateTextField.setText(c.toString()); // Let's see how this works.
@@ -80,7 +80,8 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
 
     public void showDatePicker(){
-        DialogFragment newFragment = new DatePickerFragment();
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(selectedDate);
+            newFragment.setParent(this);
             newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -102,6 +103,10 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
             return  dialog;
         }
+        public static DatePickerFragment newInstance(Calendar c){
+            DatePickerFragment datePickerFragment = new DatePickerFragment();
+            return datePickerFragment;
+        }
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -109,6 +114,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             date.set(Calendar.YEAR, year);
             date.set(Calendar.MONTH, month);
             date.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            parent.changeDate(date);
 
         }
         public void setParent(CreateEntry fragment){
@@ -117,13 +123,13 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
     }
 
-
+/*
     public Transaction buildTransactionObject(){
         Transaction transaction = new Transaction(
-                Double.parseDouble(sumTextField.getText().toString());
-                dateTextField
+                //Double.parseDouble(sumTextField.getText().toString());
+                //dateTextField
 
         );
-    }
+    } **/
  }
 
