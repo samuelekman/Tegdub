@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.samuelekman.tegdub.Interfaces.HeaderItem;
 import com.samuelekman.tegdub.Interfaces.ListItem;
+import com.samuelekman.tegdub.Interfaces.OnItemClickListener;
 import com.samuelekman.tegdub.model.Category;
 
 import org.w3c.dom.Text;
@@ -23,9 +24,11 @@ import java.util.List;
 public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<ListItem> mListItem = new ArrayList<>();
+    private OnItemClickListener listener;
 
-    public GroupedListAdapter(SelectCategory selectCategory, List<ListItem> mListItem){
+    public GroupedListAdapter(SelectCategory selectCategory, List<ListItem> mListItem, OnItemClickListener listener){
         this.mListItem = mListItem;
+        this.listener = listener;
     }
 
     @Override
@@ -69,6 +72,7 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 CategoryViewHolder categoryViewHolder = (CategoryViewHolder) viewHolder;
                 categoryViewHolder.txtCat.setText(categoryItem.getCategory().getSubCategory());
                 categoryViewHolder.imgCat.setImageResource(categoryItem.getCategory().getIcon());
+                categoryViewHolder.bind(mListItem.get(position), listener);
 
                 break;
 
@@ -81,13 +85,23 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    private class CategoryViewHolder extends RecyclerView.ViewHolder {
+
+
+    private class CategoryViewHolder extends RecyclerView.ViewHolder  {
         TextView txtCat;
         ImageView imgCat;
         public CategoryViewHolder(View v) {
             super(v);
             txtCat = (TextView) itemView.findViewById(R.id.listItemTxtView);
             imgCat = (ImageView) itemView.findViewById(R.id.listItemImgView);
+        }
+        public void bind(final Category category, OnItemClickListener listener){
+            v.setOnClickListener(new View.onClickListener(){
+                @Override public void onClick(View v){
+                    listener.onItemClick(category);
+                    System.out.println(category);
+                }
+            }
         }
     }
 
