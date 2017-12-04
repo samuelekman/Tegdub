@@ -67,7 +67,7 @@ public class SelectCategory extends AppCompatActivity {
         recView.setLayoutManager(manager);
 
     }
-
+    
     public List<ListItem> makeListItems(TreeMap<String, List<Category>> tMap){
         List<ListItem> mListItems = new ArrayList<>();
 
