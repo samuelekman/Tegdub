@@ -2,6 +2,7 @@ package com.samuelekman.tegdub;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,9 +13,16 @@ import android.widget.DatePicker;
 import android.app.DatePickerDialog;
 import android.widget.EditText;
 
+import com.samuelekman.tegdub.Interfaces.CategoryStore;
+import com.samuelekman.tegdub.Interfaces.TransactionStore;
 import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.Transaction;
+import com.samuelekman.tegdub.utils.AlertUsersDialogFragment;
+import com.samuelekman.tegdub.utils.CategoryStorage;
+import com.samuelekman.tegdub.utils.CategoryStoreFactory;
+import com.samuelekman.tegdub.utils.TransactionStoreFactory;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -29,6 +37,9 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     private EditText dateTextField;
     private EditText sumTextField;
     private Calendar selectedDate;
+    private Button saveButton;
+    CategoryStore categoryStore = CategoryStoreFactory.categoryStore();
+    TransactionStore transactionStore = TransactionStoreFactory.transactionStore();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +53,9 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             }
         });
         Calendar c = Calendar.getInstance();
-        changeDate(c);
+        System.out.println(c.toString());
         dateTextField = (EditText) findViewById(R.id.dateTextField);
-        //dateTextField.setText(c.toString()); // Let's see how this works.
+        changeDate(c);
         dateTextField.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 showDatePicker();
@@ -53,12 +64,28 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
         sumTextField = (EditText) findViewById(R.id.ammountTextField);
 
-
+        saveButton = (Button) findViewById(R.id.saveTransactionButton);
+        saveButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                if (isInputOk() == false){
+                    System.out.println("Kom in i if sats");
+                    System.out.println("Category textfiled" + categoryTextField.getText().toString());
+                   // AlertUsersDialogFragment alertUsersDialogFragment = new AlertUsersDialogFragment();
+                    //alertUsersDialogFragment.show(getSupportFragmentManager(), "tag");
+                } else {
+                    Transaction t = buildTransactionObject();
+                    transactionStore.addToTransactionList(t);
+                    Intent intent = new Intent(CreateEntry.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
     public void changeDate(Calendar date){
         this.selectedDate = date;
-        dateTextField.setText(date.toString());
+        dateTextField.setText(String.format("%d-%02d-%02d", date.get(Calendar.YEAR), date.get(Calendar.MONTH), date. get(Calendar.DAY_OF_MONTH)));
     }
 
     public void selectCategory(View v) {
@@ -77,8 +104,26 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         }
     }
 
+    public Transaction buildTransactionObject(){
+        Transaction transaction = new Transaction(
+                Double.parseDouble(sumTextField.getText().toString()),
+                selectedDate,
+                categoryStore.getCategory(categoryTextField.getText().toString())
+        );
+        return transaction;
+    }
 
-
+    public boolean isInputOk() {
+        String sum = sumTextField.getText().toString();
+        String category = dateTextField.getText().toString();
+        if (!sum.isEmpty() || !category.isEmpty()) {
+            System.out.println("Kommer in i att det är OK");
+            return true;
+        } else {
+            System.out.println("Säger att det är falskt");
+            return false;
+        }
+    }
     public void showDatePicker(){
         DatePickerFragment newFragment = DatePickerFragment.newInstance(selectedDate);
             newFragment.setParent(this);
@@ -108,6 +153,9 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             return datePickerFragment;
         }
 
+
+
+
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             Calendar date = Calendar.getInstance();
@@ -123,13 +171,5 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
     }
 
-/*
-    public Transaction buildTransactionObject(){
-        Transaction transaction = new Transaction(
-                //Double.parseDouble(sumTextField.getText().toString());
-                //dateTextField
-
-        );
-    } **/
  }
 

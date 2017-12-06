@@ -1,12 +1,10 @@
-package com.samuelekman.tegdub.Interfaces;
-
-import com.samuelekman.tegdub.model.MainCategory;
+package com.samuelekman.tegdub.CategoryList;
 
 /**
  * Created by samuel on 2017-11-28.
  */
 
-public class HeaderItem extends ListItem{
+public class HeaderItem extends ListItem {
     private String mainCategory;
 
     @Override

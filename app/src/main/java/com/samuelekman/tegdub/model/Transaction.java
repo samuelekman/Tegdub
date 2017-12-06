@@ -1,5 +1,6 @@
 package com.samuelekman.tegdub.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -9,12 +10,12 @@ import java.util.Date;
 public class Transaction {
     private double sum;
     //private String owner;
-    private Date date;
+    private Calendar date;
     private String note;
     private Category category;
 
 
-    public Transaction(double sum, Date date, Category category){
+    public Transaction(double sum, Calendar date, Category category){
         this.sum = sum;
         this.date = date;
         this.category = category;

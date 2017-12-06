@@ -1,6 +1,5 @@
-package com.samuelekman.tegdub;
+package com.samuelekman.tegdub.CategoryList;
 
-import com.samuelekman.tegdub.Interfaces.ListItem;
 import com.samuelekman.tegdub.model.Category;
 
 /**

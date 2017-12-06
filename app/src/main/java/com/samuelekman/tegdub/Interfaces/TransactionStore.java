@@ -10,5 +10,5 @@ import java.util.ArrayList;
 
 public interface TransactionStore {
     ArrayList<Transaction> getTransactionList();
-    void addToTransactionList();
+    void addToTransactionList(Transaction t);
 }

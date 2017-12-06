@@ -14,5 +14,6 @@ import java.util.TreeMap;
 public interface CategoryStore {
     ArrayList<Category> getCategoryList();
     void addToCategoryList();
+    Category getCategory(String s);
 
 }

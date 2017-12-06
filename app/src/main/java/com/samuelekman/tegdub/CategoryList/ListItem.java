@@ -1,4 +1,4 @@
-package com.samuelekman.tegdub.Interfaces;
+package com.samuelekman.tegdub.CategoryList;
 
 /**
  * Created by samuel on 2017-11-28.

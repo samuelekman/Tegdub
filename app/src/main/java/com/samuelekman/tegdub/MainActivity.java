@@ -19,9 +19,20 @@ public class MainActivity extends AppCompatActivity {
                 createEntry(v);
             }
         });
+        final Button budgetButton = (Button) findViewById(R.id.budgetButton);
+        budgetButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                showBudget(v);
+            }
+        });
     }
-    public void createEntry(View view){
+    public void createEntry(View view ){
         Intent intent = new Intent(this, CreateEntry.class);
+        startActivity(intent);
+    }
+
+    public void showBudget(View view){
+        Intent intent = new Intent(this, BudgetActivity.class);
         startActivity(intent);
     }
 

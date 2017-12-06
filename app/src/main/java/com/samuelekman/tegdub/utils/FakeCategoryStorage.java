@@ -12,12 +12,19 @@ import java.util.ArrayList;
  */
 
 public class FakeCategoryStorage implements CategoryStore {
+    ArrayList<Category> dummyList;
+
         public ArrayList<Category> getCategoryList(){
-        ArrayList<Category> dummyList = new ArrayList<Category>();
-        dummyList.add(new Category(MainCategory.HOBBY,"Painting", R.drawable.ic_format_paint_black_24dp));
-        dummyList.add(new Category(MainCategory.HOME,"Furniture", R.drawable.ic_local_hotel_black_24dp));
-        dummyList.add(new Category(MainCategory.HOME,"Sleep", R.drawable.ic_format_paint_black_24dp));
-        return dummyList;
+            if (dummyList == null) {
+
+                dummyList = new ArrayList<Category>();
+                dummyList.add(new Category(MainCategory.HOBBY, "Painting", R.drawable.ic_format_paint_black_24dp));
+                dummyList.add(new Category(MainCategory.HOME, "Furniture", R.drawable.ic_local_hotel_black_24dp));
+                dummyList.add(new Category(MainCategory.HOME, "Sleep", R.drawable.ic_format_paint_black_24dp));
+                return dummyList;
+            } else {
+                return dummyList;
+            }
     }
 
         @Override
@@ -25,4 +32,14 @@ public class FakeCategoryStorage implements CategoryStore {
                 
         }
 
+
+    public Category getCategory(String s) {
+        ArrayList<Category> cList = getCategoryList();
+        for (Category c : cList){
+            if (c.getSubCategory() != null && c.getSubCategory().contains(s)){
+                return c;
+            }
+        }
+        return null;
+    }
 }

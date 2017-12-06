@@ -3,19 +3,14 @@ package com.samuelekman.tegdub;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.samuelekman.tegdub.Interfaces.HeaderItem;
-import com.samuelekman.tegdub.Interfaces.ListItem;
+import com.samuelekman.tegdub.CategoryList.CategoryItem;
+import com.samuelekman.tegdub.CategoryList.GroupedListAdapter;
+import com.samuelekman.tegdub.CategoryList.HeaderItem;
+import com.samuelekman.tegdub.CategoryList.ListItem;
 import com.samuelekman.tegdub.controller.SelectCategoryController;
 import com.samuelekman.tegdub.model.Category;
-import com.samuelekman.tegdub.model.MainCategory;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +24,7 @@ public class SelectCategory extends AppCompatActivity {
     GroupedListAdapter adapter;
     GridLayoutManager manager;
     Category cTemp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

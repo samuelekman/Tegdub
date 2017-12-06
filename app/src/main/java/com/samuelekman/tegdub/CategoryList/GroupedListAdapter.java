@@ -1,4 +1,4 @@
-package com.samuelekman.tegdub;
+package com.samuelekman.tegdub.CategoryList;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.samuelekman.tegdub.Interfaces.HeaderItem;
-import com.samuelekman.tegdub.Interfaces.ListItem;
+import com.samuelekman.tegdub.R;
+import com.samuelekman.tegdub.SelectCategory;
 import com.samuelekman.tegdub.model.Category;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

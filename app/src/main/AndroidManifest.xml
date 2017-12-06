@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateEntry" />
-        <activity android:name=".SelectCategory"/>
+        <activity android:name=".SelectCategory" />
+        <activity android:name=".BudgetActivity"></activity>
     </application>
 
 </manifest>
