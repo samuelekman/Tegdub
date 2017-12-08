@@ -12,7 +12,7 @@ public class BudgetHeaderItem extends BudgetItem {
         return TYPE_HEADER;
     }
 
-    public HeaderItem(String mainCategory){
+    public BudgetHeaderItem(String mainCategory){
         this.mainCategory = mainCategory;
     }
 
@@ -20,4 +20,4 @@ public class BudgetHeaderItem extends BudgetItem {
         return mainCategory;
     }
 }
-}
+
