@@ -53,9 +53,14 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 viewHolder = new IncomeViewHolder(v2);
                 break;
 
-            case BudgetItem.TYPE_HEADER:
-                View v3 = inflater.inflate(R.layout.budget_header, parent, false);
-                viewHolder = new HeaderViewHolder(v3);
+            case BudgetItem.TYPE_EXPENSE_HEADER:
+                View v3 = inflater.inflate(R.layout.budget_expense_header, parent, false);
+                viewHolder = new ExpenseHeaderViewHolder(v3);
+                break;
+
+            case BudgetItem.TYPE_INCOME_HEADER:
+                View v4 = inflater.inflate(R.layout.budget_income_header, parent, false);
+                viewHolder = new IncomeHeaderViewHolder(v4);
                 break;
 
         }
@@ -72,6 +77,9 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 ExpenseViewHolder expenseViewHolder = (ExpenseViewHolder) holder;
                 expenseViewHolder.txtExp.setText(budgetExpenseItem.getTransaction().getCategory().getSubCategory());
                 expenseViewHolder.imgExp.setImageResource(budgetExpenseItem.getTransaction().getCategory().getIcon());
+                double sum = budgetExpenseItem.getTransaction().getSum();
+                String sumString = String.valueOf(sum);
+                expenseViewHolder.txtExpCost.setText(sumString);
 
                 break;
 
@@ -79,6 +87,23 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 BudgetIncomeItem budgetIncomeItem = (BudgetIncomeItem) mBudgetItem.get(position);
                 IncomeViewHolder incomeViewHolder = (IncomeViewHolder) holder;
                 incomeViewHolder.txtInc.setText(budgetIncomeItem.getTransaction().getCategory().getSubCategory());
+
+                break;
+
+            case BudgetItem.TYPE_EXPENSE_HEADER:
+                BudgetExpenseHeaderItem budgetHeaderItem = (BudgetExpenseHeaderItem) mBudgetItem.get(position);
+                ExpenseHeaderViewHolder headerViewHolder = (ExpenseHeaderViewHolder) holder;
+                headerViewHolder.txtHeader.setText(budgetHeaderItem.getHeader());
+
+                break;
+
+            case BudgetItem.TYPE_INCOME_HEADER:
+                BudgetIncomeHeaderItem budgetIncomeHeaderItem = (BudgetIncomeHeaderItem) mBudgetItem.get(position);
+                IncomeHeaderViewHolder incomeHeaderViewHolder = (IncomeHeaderViewHolder) holder;
+                incomeHeaderViewHolder.txtIncHeader.setText(budgetIncomeHeaderItem.getHeader());
+
+                break;
+
         }
     }
 
@@ -87,7 +112,7 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         ImageView imgInc;
         public IncomeViewHolder(View v){
             super(v);
-            txtInc = (TextView) itemView.findViewById(R.id.budgetIncomeItemTxtView;
+            txtInc = (TextView) itemView.findViewById(R.id.budgetIncomeItemTxtView);
             imgInc = (ImageView) itemView.findViewById(R.id.budgetIncomeItemImgView);
         }
 
@@ -96,19 +121,29 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private class ExpenseViewHolder extends RecyclerView.ViewHolder{
         TextView txtExp;
         ImageView imgExp;
+        TextView txtExpCost;
         public ExpenseViewHolder(View v){
             super(v);
             txtExp = (TextView) itemView.findViewById(R.id.budgetExpenseItemTxtView);
             imgExp = (ImageView) itemView.findViewById(R.id.budgetExpenseItemImgView);
+            txtExpCost = (TextView) itemView.findViewById(R.id.budgetExpenseCostView);
         }
 
     }
 
-    private class HeaderViewHolder extends RecyclerView.ViewHolder {
+    private class ExpenseHeaderViewHolder extends RecyclerView.ViewHolder {
         TextView txtHeader;
-        public HeaderViewHolder(View v){
+        public ExpenseHeaderViewHolder(View v){
             super(v);
-            txtHeader = (TextView) itemView.findViewById(R.id.budgetHeaderTxtView);
+            txtHeader = (TextView) itemView.findViewById(R.id.budgetExpenseHeaderTxtView);
+        }
+    }
+
+    private class IncomeHeaderViewHolder extends RecyclerView.ViewHolder {
+        TextView txtIncHeader;
+        public IncomeHeaderViewHolder(View v){
+            super(v);
+            txtIncHeader = (TextView) itemView.findViewById(R.id.budgetIncomeHeaderTxtView);
         }
     }
 

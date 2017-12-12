@@ -4,15 +4,15 @@ package com.samuelekman.tegdub.BudgetList;
  * Created by samuel on 2017-12-06.
  */
 
-public class BudgetHeaderItem extends BudgetItem {
+public class BudgetExpenseHeaderItem extends BudgetItem {
     private String mainCategory;
 
     @Override
     public int getType() {
-        return TYPE_HEADER;
+        return TYPE_EXPENSE_HEADER;
     }
 
-    public BudgetHeaderItem(String mainCategory){
+    public BudgetExpenseHeaderItem(String mainCategory){
         this.mainCategory = mainCategory;
     }
 

@@ -6,11 +6,11 @@
     >
 
     <TextView
-        android:id="@+id/budgetHeaderTxtView"
+        android:id="@+id/budgetIncomeHeaderTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         tools:text="Header" />
@@ -20,7 +20,7 @@
         android:layout_height="2dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/budgetHeaderTxtView"
+        android:layout_below="@+id/budgetIncomeHeaderTxtView"
         android:background="?android:attr/listDivider"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="30dp"
