@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.samuelekman.tegdub.BudgetActivity;
 import com.samuelekman.tegdub.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,10 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+
+
         switch(holder.getItemViewType()){
+
 
             case BudgetItem.TYPE_EXPENSE:
                 BudgetExpenseItem budgetExpenseItem = (BudgetExpenseItem) mBudgetItem.get(position);
@@ -105,6 +110,8 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 break;
 
         }
+
+
     }
 
     private class IncomeViewHolder extends RecyclerView.ViewHolder{
@@ -146,5 +153,6 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             txtIncHeader = (TextView) itemView.findViewById(R.id.budgetIncomeHeaderTxtView);
         }
     }
+
 
 }
