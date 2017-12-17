@@ -15,4 +15,6 @@ public interface TransactionStore {
     void addToTransactionList(Transaction t);
 
     TreeMap<String,List<Transaction>> prepareList();
+
+    TreeMap<String,List<Transaction>> testList();
 }

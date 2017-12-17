@@ -81,7 +81,7 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 BudgetExpenseItem budgetExpenseItem = (BudgetExpenseItem) mBudgetItem.get(position);
                 ExpenseViewHolder expenseViewHolder = (ExpenseViewHolder) holder;
                 expenseViewHolder.txtExp.setText(budgetExpenseItem.getTransaction().getCategory().getSubCategory());
-                expenseViewHolder.imgExp.setImageResource(budgetExpenseItem.getTransaction().getCategory().getIcon());
+               // expenseViewHolder.imgExp.setImageResource(budgetExpenseItem.getTransaction().getCategory().getIcon());
                 double sum = budgetExpenseItem.getTransaction().getSum();
                 String sumString = String.valueOf(sum);
                 expenseViewHolder.txtExpCost.setText(sumString);
@@ -92,6 +92,9 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 BudgetIncomeItem budgetIncomeItem = (BudgetIncomeItem) mBudgetItem.get(position);
                 IncomeViewHolder incomeViewHolder = (IncomeViewHolder) holder;
                 incomeViewHolder.txtInc.setText(budgetIncomeItem.getTransaction().getCategory().getSubCategory());
+                double incsum = budgetIncomeItem.getTransaction().getSum();
+                String suString = String.valueOf(incsum);
+                incomeViewHolder.txtIncSum.setText(suString);
 
                 break;
 
@@ -117,10 +120,12 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private class IncomeViewHolder extends RecyclerView.ViewHolder{
         TextView txtInc;
         ImageView imgInc;
+        TextView txtIncSum;
         public IncomeViewHolder(View v){
             super(v);
             txtInc = (TextView) itemView.findViewById(R.id.budgetIncomeItemTxtView);
-            imgInc = (ImageView) itemView.findViewById(R.id.budgetIncomeItemImgView);
+          //  imgInc = (ImageView) itemView.findViewById(R.id.budgetIncomeItemImgView);
+            txtIncSum = (TextView) itemView.findViewById(R.id.budgetSumTxtView);
         }
 
     }
@@ -132,7 +137,7 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public ExpenseViewHolder(View v){
             super(v);
             txtExp = (TextView) itemView.findViewById(R.id.budgetExpenseItemTxtView);
-            imgExp = (ImageView) itemView.findViewById(R.id.budgetExpenseItemImgView);
+           // imgExp = (ImageView) itemView.findViewById(R.id.budgetExpenseItemImgView);
             txtExpCost = (TextView) itemView.findViewById(R.id.budgetExpenseCostView);
         }
 

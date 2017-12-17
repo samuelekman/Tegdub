@@ -9,9 +9,11 @@
         android:id="@+id/budgetExpenseHeaderTxtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         tools:text="Header" />
 
@@ -24,5 +26,5 @@
         android:background="?android:attr/listDivider"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="30dp"
-    />
+        android:id="@+id/view2" />
 </RelativeLayout>

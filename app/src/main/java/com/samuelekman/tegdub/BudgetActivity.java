@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
+
 import com.samuelekman.tegdub.BudgetList.BudgetExpenseHeaderItem;
 import com.samuelekman.tegdub.BudgetList.BudgetIncomeHeaderItem;
 import com.samuelekman.tegdub.BudgetList.BudgetIncomeItem;
@@ -36,9 +37,10 @@ public class BudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
 
-        treeMap = transactionStore.prepareList();
+        treeMap = transactionStore.testList();
 
         //the following is just a test print :-:
+/*
         for (Map.Entry<String, List<Transaction>> entry : treeMap.entrySet()) {
             String key = entry.getKey();
             System.out.println(key);
@@ -46,6 +48,7 @@ public class BudgetActivity extends AppCompatActivity {
                 System.out.println(t.toString());
             }
         }
+*/
         List<BudgetItem> mBudgetItem = makeListItems(treeMap);
         adapter = new BudgetListAdapter(this, mBudgetItem);
         recView = (RecyclerView) findViewById(R.id.budgetList);
@@ -58,8 +61,15 @@ public class BudgetActivity extends AppCompatActivity {
     public List<BudgetItem> makeListItems(TreeMap<String, List<Transaction>> tMap){
         List<BudgetItem> mListItems = new ArrayList<>();
 
+        //Following is for testing :9
+        /*
+        BudgetExpenseHeaderItem headerItem = new BudgetExpenseHeaderItem("Expenses");
+        mListItems.add(headerItem);
+        BudgetIncomeHeaderItem incomeHeaderItem = new BudgetIncomeHeaderItem("Incomes");
+        mListItems.add(incomeHeaderItem); */
         for(String header : tMap.keySet()) {
-            if (header != "INCOME") {
+
+            if (!header.equals("Incomes")) {
                 BudgetExpenseHeaderItem headerItem = new BudgetExpenseHeaderItem(header);
                 mListItems.add(headerItem);
             } else {
@@ -87,7 +97,7 @@ public class BudgetActivity extends AppCompatActivity {
         TextView month = (TextView) findViewById(R.id.monthTxt);
         double exp = 0;
         double inc = 0;
-        double tot = 0;
+        double tot;
 
         if (treeMap != null){
             for (String mCat : treeMap.keySet()){
