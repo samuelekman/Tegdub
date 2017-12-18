@@ -72,7 +72,7 @@ public class SelectCategory extends AppCompatActivity {
         recView.setLayoutManager(manager);
 
     }
-
+    //This method takes a TreeMap as argument, loops through the list and makes listHeaderItems or CategoryItems and returns a list of listitems
     public List<ListItem> makeListItems(TreeMap<String, List<Category>> tMap){
         List<ListItem> mListItems = new ArrayList<>();
 

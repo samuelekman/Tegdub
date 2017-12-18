@@ -21,18 +21,18 @@ public interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addTransaction(Transaction transaction);
 
-    @Query("select * from transaction")
-    public List<Transaction> gettAllTransactions();
+    @Query("SELECT * FROM transactions")
+    List<Transaction> getAllTransactions();
 
-    @Query("select * from transaction where t_id = :transactionId")
-    public List<Transaction> getTransaction(int transactionId);
+    @Query("select * from transactions where t_id = :transactionId")
+    List<Transaction> getTransaction(int transactionId);
 
-    @Query("select * from transaction where strftime('%m', date) = :month")
-    public List<Transaction> getTransactionMonth(String month);
+    @Query("select * from transactions where strftime('%m', date) = :month")
+    List<Transaction> getTransactionMonth(String month);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateTransaction(Transaction transaction);
 
-    @Query("delete * from transaction where t_id = :transactionId")
+    @Query("delete from transactions where t_id = :transactionId")
     void deleteTransaction(int transactionId);
 }

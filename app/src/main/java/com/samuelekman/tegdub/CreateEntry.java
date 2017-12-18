@@ -104,6 +104,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         }
     }
 
+    //This method reads the UserInput and creates a transaction object
     public Transaction buildTransactionObject(){
         Transaction transaction = new Transaction(
                 Double.parseDouble(sumTextField.getText().toString()),
@@ -113,10 +114,11 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         return transaction;
     }
 
+    //Method that checks if the UserInput is OK (don't want to build TransactionObjects with null values)
     public boolean isInputOk() {
         String sum = sumTextField.getText().toString();
         String category = dateTextField.getText().toString();
-        if (!sum.isEmpty() || !category.isEmpty()) {
+        if (!sum.isEmpty() && !category.isEmpty()) {
             System.out.println("Kommer in i att det är OK");
             return true;
         } else {
@@ -135,6 +137,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
     }
 
+    //Inner class for showing the datePicker.
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
     private CreateEntry parent;
 

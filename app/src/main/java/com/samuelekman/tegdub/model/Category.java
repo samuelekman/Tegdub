@@ -1,7 +1,11 @@
 package com.samuelekman.tegdub.model;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
+import com.samuelekman.tegdub.TypeConverters.MainCategoryConverter;
 
 /**
  * Created by samuel on 2017-11-13.
@@ -10,12 +14,13 @@ import android.arch.persistence.room.PrimaryKey;
 public class Category {
     @PrimaryKey
     private int cid;
-    private String color;
+    //private String color;
     private String subCategory;
     private int icon;
-    MainCategory mainCategory;
+    @TypeConverters(MainCategoryConverter.class)
+    public MainCategory mainCategory;
 
-
+    @Ignore
     public Category(MainCategory mainCategory, String subCategory, int icon){
         this.mainCategory = mainCategory;
         this.subCategory = subCategory;
@@ -40,5 +45,13 @@ public class Category {
 
     public MainCategory getMainCategory(){
         return mainCategory;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
     }
 }
