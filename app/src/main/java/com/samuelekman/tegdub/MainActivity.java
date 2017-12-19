@@ -3,15 +3,41 @@ package com.samuelekman.tegdub;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.samuelekman.tegdub.model.Category;
+import com.samuelekman.tegdub.model.MainCategory;
+import com.samuelekman.tegdub.model.Transaction;
+import com.samuelekman.tegdub.utils.AppDatabase;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+    //Following DB is for testing only!
+    private AppDatabase database;
+    private static final String TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        database = AppDatabase.getDatabase(getApplicationContext());
+        //database.categoryDao().addCategory(new Category(MainCategory.ENTERTAINMENT, "Cinema", "ic_attach_money_black_24dp"));
+        //database.categoryDao().nukeTable();
+        ArrayList<Category> cList = (ArrayList<Category>) database.categoryDao().getCategories();
+        for(Category c : cList ){
+            Log.d(TAG, "onCreate: " + c.toString());
+        }
+
+        if (database.categoryDao().getCategories() == null){
+            initCategoryDB();
+        }
 
         final Button button = (Button) findViewById(R.id.create_entry);
         button.setOnClickListener(new View.OnClickListener(){
@@ -34,6 +60,42 @@ public class MainActivity extends AppCompatActivity {
     public void showBudget(View view){
         Intent intent = new Intent(this, BudgetActivity.class);
         startActivity(intent);
+    }
+
+    //TextInputEditText (for error and hints according to MaterialDesign!!!
+
+    //This method initializes the DB with the default CategoryObjects. There should be more categories but I want to fix the rest of the app first,
+    // This is after all not the main purpose of this project..
+
+    private void initCategoryDB(){
+        //Initializing db with subcategories of MainCategory Miscellaneous
+        database.categoryDao().addCategory(new Category(MainCategory.MISCELLANEOUS, "Miscellaneous", "ic_local_offer_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.MISCELLANEOUS, "Healthcare", "ic_favorite_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.MISCELLANEOUS, "Tobacco", "ic_smoking_rooms_black_24dp"));
+
+        //Initializing subcategories of MainCategory Entertainment
+        database.categoryDao().addCategory(new Category(MainCategory.ENTERTAINMENT, "Entertainment", "ic_pool_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.ENTERTAINMENT, "Hobby", "ic_golf_course_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.ENTERTAINMENT, "Vacation", "ic_hot_tub_black_24dp"));
+
+        //Initializing subcategories of MainCategory sustenance
+        database.categoryDao().addCategory(new Category(MainCategory.SUSTENANCE, "Sustenance", "ic_local_dining_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.SUSTENANCE, "Alcohol", "ic_local_drink_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.SUSTENANCE, "Groceries", "ic_local_grocery_store_black_24dp"));
+
+        //Initializing subcategories of MainCategory Housing
+        database.categoryDao().addCategory(new Category(MainCategory.HOUSING, "Housing", "ic_home_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.HOUSING, "Rent", "ic_domain_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.HOUSING, "Morgage", "ic_monetization_on_black_24dp"));
+
+        //Initializing subcategories of MainCategory Income
+        database.categoryDao().addCategory(new Category(MainCategory.INCOME, "Income", "ic_attach_money_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.INCOME, "Salary", "ic_payment_black_24dp"));
+
+        //Initializing subcategories of MainCategory Transportation
+        database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Transportation", "ic_train_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Car", "ic_directions_car_black_24dp"));
+        database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Public Transportation", "ic_tram_black_24dp"));
     }
 
 

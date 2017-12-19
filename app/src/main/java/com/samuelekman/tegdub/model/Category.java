@@ -5,6 +5,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
+
 import com.samuelekman.tegdub.TypeConverters.MainCategoryConverter;
 
 /**
@@ -16,26 +17,28 @@ public class Category {
     private int cid;
     //private String color;
     private String subCategory;
-    private int icon;
+    private String icon;
     @TypeConverters(MainCategoryConverter.class)
     public MainCategory mainCategory;
+    @Ignore
+    private int iconId;
 
     @Ignore
-    public Category(MainCategory mainCategory, String subCategory, int icon){
+    public Category(MainCategory mainCategory, String subCategory, String icon){
         this.mainCategory = mainCategory;
         this.subCategory = subCategory;
         this.icon = icon;
 
     }
 
-    public Category(int cid, MainCategory mainCategory, String subCategory, int icon){
+    public Category(int cid, MainCategory mainCategory, String subCategory, String icon){
         this.cid = cid;
         this.mainCategory = mainCategory;
         this.subCategory = subCategory;
         this.icon = icon;
     }
 
-    public int getIcon(){
+    public String getIcon(){
         return icon;
     }
 
@@ -53,5 +56,9 @@ public class Category {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    public void getIconId(){
+
     }
 }

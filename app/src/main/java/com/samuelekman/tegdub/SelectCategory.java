@@ -1,9 +1,11 @@
 package com.samuelekman.tegdub;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.samuelekman.tegdub.CategoryList.CategoryItem;
 import com.samuelekman.tegdub.CategoryList.GroupedListAdapter;
@@ -11,6 +13,7 @@ import com.samuelekman.tegdub.CategoryList.HeaderItem;
 import com.samuelekman.tegdub.CategoryList.ListItem;
 import com.samuelekman.tegdub.controller.SelectCategoryController;
 import com.samuelekman.tegdub.model.Category;
+import com.samuelekman.tegdub.utils.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,6 +27,8 @@ public class SelectCategory extends AppCompatActivity {
     GroupedListAdapter adapter;
     GridLayoutManager manager;
     Category cTemp;
+    AppDatabase database;
+    private static final String TAG = "SelectCategory";
 
 
 
@@ -31,9 +36,10 @@ public class SelectCategory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_category);
-
-        SelectCategoryController selectCategoryController = new SelectCategoryController();
-        TreeMap<String, List<Category>> treeMap = selectCategoryController.prepareList();
+        database = AppDatabase.getDatabase(getApplicationContext());
+        //SelectCategoryController selectCategoryController = new SelectCategoryController();
+        //TreeMap<String, List<Category>> treeMap = selectCategoryController.prepareList();
+        TreeMap<String, List<Category>> treeMap = prepareList();
 
         for (Map.Entry<String, List<Category>> entry : treeMap.entrySet()) {
             String key = entry.getKey();
@@ -92,5 +98,28 @@ public class SelectCategory extends AppCompatActivity {
         getIntent().putExtra("Dunno", cTemp.getSubCategory());
         this.setResult(RESULT_OK, getIntent());
         super.onBackPressed();
+    }
+
+    public TreeMap<String, List<Category>> prepareList(){
+        //List<Category> catList = categoryStore.getCategoryList();
+        List<Category> catList = database.categoryDao().getCategories();
+
+        for (Category c : catList){
+            Log.d(TAG, "prepareList: catList" + c.toString());
+        }
+        TreeMap<String, List<Category>> categoryTreeMap = new TreeMap<>();
+        for (int i = 0; i<catList.size(); i++){
+            String treeMapKey = catList.get(i).getMainCategory().toString();
+
+            if(categoryTreeMap.containsKey(treeMapKey)) {
+                categoryTreeMap.get(treeMapKey).add(catList.get(i));
+
+            } else {
+                List<Category> list = new ArrayList<>();
+                list.add(catList.get(i));
+                categoryTreeMap.put(treeMapKey, list);
+            }
+        }
+        return categoryTreeMap;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.samuelekman.tegdub.R;
 import com.samuelekman.tegdub.SelectCategory;
 import com.samuelekman.tegdub.model.Category;
+import com.samuelekman.tegdub.utils.IconHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,8 @@ import java.util.List;
  */
 
 public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
+    private IconHelper iconHelper;
+    private SelectCategory selectCategory;
     public interface OnItemClickListener {
         void onItemClick(Category category);
     }
@@ -30,6 +32,7 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public GroupedListAdapter(SelectCategory selectCategory, List<ListItem> mListItem, OnItemClickListener listener){
         this.mListItem = mListItem;
         this.listener = listener;
+        this.selectCategory = selectCategory;
     }
 
     @Override
@@ -72,7 +75,9 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 CategoryItem categoryItem = (CategoryItem) mListItem.get(position);
                 CategoryViewHolder categoryViewHolder = (CategoryViewHolder) viewHolder;
                 categoryViewHolder.txtCat.setText(categoryItem.getCategory().getSubCategory());
-                categoryViewHolder.imgCat.setImageResource(categoryItem.getCategory().getIcon());
+                String iconName = categoryItem.getCategory().getIcon();
+                int iconId =iconHelper.getImageId(selectCategory, iconName);
+                categoryViewHolder.imgCat.setImageResource(iconId);
                 categoryViewHolder.bind(categoryItem.getCategory(), listener);
 
                 break;

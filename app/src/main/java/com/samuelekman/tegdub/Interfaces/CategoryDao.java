@@ -22,4 +22,6 @@ public interface CategoryDao {
     @Query("SELECT * FROM category")
     List<Category> getCategories();
 
+    @Query("DELETE FROM category")
+    public void nukeTable();
 }

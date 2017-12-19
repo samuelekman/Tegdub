@@ -1,8 +1,11 @@
 package com.samuelekman.tegdub.controller;
 
+import android.app.Activity;
+
 import com.samuelekman.tegdub.Interfaces.CategoryStore;
 import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.MainCategory;
+import com.samuelekman.tegdub.utils.AppDatabase;
 import com.samuelekman.tegdub.utils.CategoryStoreFactory;
 
 import java.util.ArrayList;
@@ -19,8 +22,10 @@ public class SelectCategoryController {
     TreeMap<String, List<Category>> mainCategoryListTreeMap;
 
 
+
     public TreeMap<String, List<Category>> prepareList(){
             List<Category> catList = categoryStore.getCategoryList();
+
             TreeMap<String, List<Category>> categoryTreeMap = new TreeMap<>();
             for (int i = 0; i<catList.size(); i++){
                 String treeMapKey = catList.get(i).getMainCategory().toString();
