@@ -14,16 +14,17 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/listItemImgView"
         tools:text="ListItem"
+        android:layout_marginLeft="5dp"
         android:paddingBottom="3dp"/>
 
     <ImageView
         android:id="@+id/listItemImgView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/listItemTxtView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/listItemTxtView"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         app:srcCompat="@drawable/ic_attach_money_black_24dp" />
 </RelativeLayout>

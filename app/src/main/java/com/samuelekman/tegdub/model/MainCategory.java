@@ -5,15 +5,15 @@ package com.samuelekman.tegdub.model;
  */
 
 public enum MainCategory {
-    ENTERTAINMENT(0), HOME(1), INCOME(2), MISCELLANEOUS(3), TRANSPORTATION(4), HOUSING(5), SUSTENANCE(6);
+    ENTERTAINMENT("#FA58F4"), HOME("#58FA58"), INCOME("#2E2EFE"), MISCELLANEOUS("#FFFF00"), TRANSPORTATION("#FF8000"), HOUSING("#00FFFF"), SUSTENANCE("#FF0040");
 
-    private int code;
+    private String colorCode;
 
-    MainCategory(int code){
-        this.code = code;
+    MainCategory(String colorCode){
+        this.colorCode = colorCode;
     }
 
-    public int getCode(){
-        return code;
+    public String getColorCode(){
+        return colorCode;
     }
 }

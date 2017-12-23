@@ -1,5 +1,6 @@
 package com.samuelekman.tegdub.CategoryList;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,8 @@ public class GroupedListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 String iconName = categoryItem.getCategory().getIcon();
                 int iconId =iconHelper.getImageId(selectCategory, iconName);
                 categoryViewHolder.imgCat.setImageResource(iconId);
+                int color = Color.parseColor(categoryItem.getCategory().getMainCategory().getColorCode());
+                categoryViewHolder.imgCat.setColorFilter(color);
                 categoryViewHolder.bind(categoryItem.getCategory(), listener);
 
                 break;

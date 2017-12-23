@@ -27,17 +27,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        database = AppDatabase.getDatabase(getApplicationContext());
+       database = AppDatabase.getDatabase(getApplicationContext());
         //database.categoryDao().addCategory(new Category(MainCategory.ENTERTAINMENT, "Cinema", "ic_attach_money_black_24dp"));
         //database.categoryDao().nukeTable();
-        ArrayList<Category> cList = (ArrayList<Category>) database.categoryDao().getCategories();
-        for(Category c : cList ){
-            Log.d(TAG, "onCreate: " + c.toString());
-        }
+       ArrayList<Category> cList = (ArrayList<Category>) database.categoryDao().getCategories();
+        Log.d(TAG, "onCreate: result size" + cList.size());
 
-        if (database.categoryDao().getCategories() == null){
+
+        if (cList.size() <= 0){
             initCategoryDB();
         }
+
+
 
         final Button button = (Button) findViewById(R.id.create_entry);
         button.setOnClickListener(new View.OnClickListener(){
@@ -69,6 +70,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void initCategoryDB(){
         //Initializing db with subcategories of MainCategory Miscellaneous
+        /*
+        ArrayList<Category> tempList = new ArrayList<Category>();
+        tempList.add(new Category(MainCategory.MISCELLANEOUS, "Miscellaneous", "ic_local_offer_black_24dp"));
+        tempList.add(new Category(MainCategory.MISCELLANEOUS, "Healthcare", "ic_favorite_black_24dp"));
+        tempList.add(new Category(MainCategory.MISCELLANEOUS, "Tobacco", "ic_smoking_rooms_black_24dp"));
+        tempList.add(new Category(MainCategory.ENTERTAINMENT, "Entertainment", "ic_pool_black_24dp"));
+        tempList.add(new Category(MainCategory.ENTERTAINMENT, "Hobby", "ic_golf_course_black_24dp"));
+        tempList.add(new Category(MainCategory.ENTERTAINMENT, "Vacation", "ic_hot_tub_black_24dp"));
+        for (Category c : tempList){
+            database.categoryDao().addCategory(c);
+        }
+**/
+
+        Log.d(TAG, "initCategoryDB: Initializing DB");
         database.categoryDao().addCategory(new Category(MainCategory.MISCELLANEOUS, "Miscellaneous", "ic_local_offer_black_24dp"));
         database.categoryDao().addCategory(new Category(MainCategory.MISCELLANEOUS, "Healthcare", "ic_favorite_black_24dp"));
         database.categoryDao().addCategory(new Category(MainCategory.MISCELLANEOUS, "Tobacco", "ic_smoking_rooms_black_24dp"));
@@ -96,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
         database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Transportation", "ic_train_black_24dp"));
         database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Car", "ic_directions_car_black_24dp"));
         database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Public Transportation", "ic_tram_black_24dp"));
-    }
+
+         }
 
 
 }

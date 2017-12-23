@@ -28,7 +28,7 @@ public interface TransactionDao {
     List<Transaction> getTransaction(int transactionId);
 
     @Query("select * from transactions where strftime('%m', date) = :month")
-    List<Transaction> getTransactionMonth(String month);
+    List<Transaction> getTransactionMonth(int month);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateTransaction(Transaction transaction);

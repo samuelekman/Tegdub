@@ -23,6 +23,6 @@
         android:layout_below="@+id/headerTxtView"
         android:background="?android:attr/listDivider"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="10dp"
     />
 </RelativeLayout>

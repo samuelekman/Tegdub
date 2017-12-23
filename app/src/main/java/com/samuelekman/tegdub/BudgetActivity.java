@@ -1,9 +1,13 @@
 package com.samuelekman.tegdub;
 
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -27,17 +31,20 @@ import java.util.TreeMap;
 
 public class BudgetActivity extends AppCompatActivity {
 
- TransactionStore transactionStore = TransactionStoreFactory.transactionStore();
- RecyclerView recView;
- BudgetListAdapter adapter;
- TreeMap <String, List<Transaction>> treeMap;
+ //TransactionStore transactionStore = TransactionStoreFactory.transactionStore();
+ //RecyclerView recView;
+ //BudgetListAdapter adapter;
+ //TreeMap <String, List<Transaction>> treeMap;
+    FragmentPagerAdapter fragmentPagerAdapter;
 
  @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget);
-
-        treeMap = transactionStore.testList();
+     ViewPager viewPager = (ViewPager) findViewById(R.id.budgetViewPager);
+     fragmentPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+     viewPager.setAdapter(fragmentPagerAdapter);
+        //treeMap = transactionStore.testList();
 
         //the following is just a test print :-:
 /*
@@ -48,25 +55,47 @@ public class BudgetActivity extends AppCompatActivity {
                 System.out.println(t.toString());
             }
         }
-*/
-        List<BudgetItem> mBudgetItem = makeListItems(treeMap);
+*/      /*
+        //List<BudgetItem> mBudgetItem = makeListItems(treeMap);
         adapter = new BudgetListAdapter(this, mBudgetItem);
         recView = (RecyclerView) findViewById(R.id.budgetList);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.setAdapter(adapter);
-        initDefaults();
+        //Initiating Default values with a calendar object.
+        changeSummary(Calendar.getInstance());
+        */
+/*
+     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.RIGHT, ItemTouchHelper.LEFT) {
+         @Override
+         public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+             return false;
+         }
 
+         @Override
+         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+             if(direction == ItemTouchHelper.RIGHT){
+                Calendar c = Calendar.getInstance();
+                c.add(Calendar.MONTH, 1);
+                changeSummary(c);
+             }
+
+             if (direction == ItemTouchHelper.LEFT){
+                 Calendar c = Calendar.getInstance();
+                 c.add(Calendar.MONTH, -1);
+                 changeSummary(c);
+             }
+         }
+     };
+
+     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+     itemTouchHelper.attachToRecyclerView(recView);
+    */
     }
-
+/*
     public List<BudgetItem> makeListItems(TreeMap<String, List<Transaction>> tMap){
         List<BudgetItem> mListItems = new ArrayList<>();
 
-        //Following is for testing :9
-        /*
-        BudgetExpenseHeaderItem headerItem = new BudgetExpenseHeaderItem("Expenses");
-        mListItems.add(headerItem);
-        BudgetIncomeHeaderItem incomeHeaderItem = new BudgetIncomeHeaderItem("Incomes");
-        mListItems.add(incomeHeaderItem); */
+
         for(String header : tMap.keySet()) {
 
             if (!header.equals("Incomes")) {
@@ -89,8 +118,10 @@ public class BudgetActivity extends AppCompatActivity {
         }
         return mListItems;
     }
+*/
 
-    public void initDefaults(){
+/*
+    public void changeSummary(Calendar c){
         TextView expenses = (TextView) findViewById(R.id.expenseSummaryTxt);
         TextView incomes = (TextView) findViewById(R.id.incomeSummaryTxt);
         TextView summary = (TextView) findViewById(R.id.summaryTxt);
@@ -123,7 +154,8 @@ public class BudgetActivity extends AppCompatActivity {
         expenses.setText("Expenses: "+sExpence);
         incomes.setText("Incomes: " +sInc);
         summary.setText("Balance " +sTot);
-        Calendar c = Calendar.getInstance();
+        //Calendar c = Calendar.getInstance();
         month.setText(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
     }
+    */
 }

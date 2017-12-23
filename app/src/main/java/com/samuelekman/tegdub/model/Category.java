@@ -13,7 +13,7 @@ import com.samuelekman.tegdub.TypeConverters.MainCategoryConverter;
  */
 @Entity
 public class Category {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int cid;
     //private String color;
     private String subCategory;

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -38,6 +39,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     private EditText sumTextField;
     private Calendar selectedDate;
     private Button saveButton;
+    private static final String TAG = "CreateEntry";
     CategoryStore categoryStore = CategoryStoreFactory.categoryStore();
     TransactionStore transactionStore = TransactionStoreFactory.transactionStore();
 
@@ -68,11 +70,13 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         saveButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if (isInputOk() == false){
-                    System.out.println("Kom in i if sats");
+                    Log.d(TAG, "onClick: Säger att det är falskt");
+
                     System.out.println("Category textfiled" + categoryTextField.getText().toString());
                    // AlertUsersDialogFragment alertUsersDialogFragment = new AlertUsersDialogFragment();
                     //alertUsersDialogFragment.show(getSupportFragmentManager(), "tag");
                 } else {
+                    Log.d(TAG, "onClick: säger att det är sant och bygger ett objekt");
                     Transaction t = buildTransactionObject();
                     transactionStore.addToTransactionList(t);
                     Intent intent = new Intent(CreateEntry.this, MainActivity.class);
@@ -118,7 +122,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     public boolean isInputOk() {
         String sum = sumTextField.getText().toString();
         String category = dateTextField.getText().toString();
-        if (!sum.isEmpty() && !category.isEmpty()) {
+        if (!sum.isEmpty() || !category.isEmpty()) {
             System.out.println("Kommer in i att det är OK");
             return true;
         } else {

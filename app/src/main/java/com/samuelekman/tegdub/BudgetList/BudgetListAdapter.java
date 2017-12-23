@@ -24,7 +24,7 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private List<BudgetItem> mBudgetItem = new ArrayList<>();
 
-    public BudgetListAdapter(BudgetActivity budgetActivity, List<BudgetItem> mBudgetItem){
+    public BudgetListAdapter(/*BudgetActivity budgetActivity,*/ List<BudgetItem> mBudgetItem){
         this.mBudgetItem = mBudgetItem;
     }
 

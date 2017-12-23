@@ -1,10 +1,12 @@
 package com.samuelekman.tegdub;
 
 import android.app.Activity;
+import android.content.ClipData;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 
 import com.samuelekman.tegdub.CategoryList.CategoryItem;
@@ -16,6 +18,7 @@ import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.utils.AppDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -77,6 +80,8 @@ public class SelectCategory extends AppCompatActivity {
                                   });
         recView.setLayoutManager(manager);
 
+
+
     }
     //This method takes a TreeMap as argument, loops through the list and makes listHeaderItems or CategoryItems and returns a list of listitems
     public List<ListItem> makeListItems(TreeMap<String, List<Category>> tMap){
@@ -95,8 +100,13 @@ public class SelectCategory extends AppCompatActivity {
     }
 
     public void onBackPressed(){
+        if(cTemp!=null){
         getIntent().putExtra("Dunno", cTemp.getSubCategory());
         this.setResult(RESULT_OK, getIntent());
+        super.onBackPressed();
+        }
+
+        this.setResult(RESULT_CANCELED, getIntent());
         super.onBackPressed();
     }
 
