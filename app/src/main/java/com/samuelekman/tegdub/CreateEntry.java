@@ -19,6 +19,7 @@ import com.samuelekman.tegdub.Interfaces.TransactionStore;
 import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.Transaction;
 import com.samuelekman.tegdub.utils.AlertUsersDialogFragment;
+import com.samuelekman.tegdub.utils.AppDatabase;
 import com.samuelekman.tegdub.utils.CategoryStorage;
 import com.samuelekman.tegdub.utils.CategoryStoreFactory;
 import com.samuelekman.tegdub.utils.TransactionStoreFactory;
@@ -37,9 +38,11 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     private EditText categoryTextField;
     private EditText dateTextField;
     private EditText sumTextField;
+    private EditText noteTextField;
     private Calendar selectedDate;
     private Button saveButton;
     private static final String TAG = "CreateEntry";
+    AppDatabase database;
     CategoryStore categoryStore = CategoryStoreFactory.categoryStore();
     TransactionStore transactionStore = TransactionStoreFactory.transactionStore();
 
@@ -47,6 +50,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
+        database =  AppDatabase.getDatabase(this);
 
         categoryTextField = (EditText) findViewById(R.id.categoryTextField);
         categoryTextField.setOnClickListener(new View.OnClickListener(){
@@ -66,6 +70,8 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
         sumTextField = (EditText) findViewById(R.id.ammountTextField);
 
+        noteTextField = (EditText) findViewById(R.id.noteTextField);
+
         saveButton = (Button) findViewById(R.id.saveTransactionButton);
         saveButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -78,7 +84,8 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
                 } else {
                     Log.d(TAG, "onClick: säger att det är sant och bygger ett objekt");
                     Transaction t = buildTransactionObject();
-                    transactionStore.addToTransactionList(t);
+                    //transactionStore.addToTransactionList(t);
+                    database.transactionDao().addTransaction(t);
                     Intent intent = new Intent(CreateEntry.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -89,7 +96,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     }
     public void changeDate(Calendar date){
         this.selectedDate = date;
-        dateTextField.setText(String.format("%d-%02d-%02d", date.get(Calendar.YEAR), date.get(Calendar.MONTH), date. get(Calendar.DAY_OF_MONTH)));
+        dateTextField.setText(String.format("%d-%02d-%02d", date.get(Calendar.YEAR), date.get(Calendar.MONTH)+1, date. get(Calendar.DAY_OF_MONTH)));
     }
 
     public void selectCategory(View v) {
@@ -110,10 +117,13 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
     //This method reads the UserInput and creates a transaction object
     public Transaction buildTransactionObject(){
+
         Transaction transaction = new Transaction(
                 Double.parseDouble(sumTextField.getText().toString()),
                 selectedDate,
-                categoryStore.getCategory(categoryTextField.getText().toString())
+                noteTextField.getText().toString(),
+                database.categoryDao().getCategory(categoryTextField.getText().toString()).getCid()
+
         );
         return transaction;
     }

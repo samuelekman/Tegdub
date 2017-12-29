@@ -57,6 +57,7 @@ public class Transaction {
         this.note = note;
     }
 
+
     public Transaction(double sum, Calendar date, String note, int cat_id){
         this.sum = sum;
         this.date = date;
@@ -68,12 +69,14 @@ public class Transaction {
         return category;
     }
 
+    public void setCategory(Category category){this.category = category;}
+
     public double getSum(){
         return sum;
     }
 
     public String toString(){
-        return "The amount" + this.sum + "\n the subCategory:\n" + this.category.getSubCategory().toString();
+        return "The amount" + this.sum + "\n the subCategory:\n";//+ this.category.getSubCategory().toString();
     }
 
     public int getT_id() {

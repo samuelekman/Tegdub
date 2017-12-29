@@ -2,9 +2,13 @@ package com.samuelekman.tegdub;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +23,7 @@ import com.samuelekman.tegdub.BudgetList.BudgetIncomeHeaderItem;
 import com.samuelekman.tegdub.BudgetList.BudgetIncomeItem;
 import com.samuelekman.tegdub.BudgetList.BudgetItem;
 import com.samuelekman.tegdub.BudgetList.BudgetListAdapter;
+import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.MainCategory;
 import com.samuelekman.tegdub.model.Transaction;
 import com.samuelekman.tegdub.utils.AppDatabase;
@@ -38,33 +43,80 @@ public class BudgetFragment extends Fragment {
     TextView expenses;
     TextView incomes;
     TextView summary;
-    TextView monthTxt;
+    TextView monthtext;
+
 
     private int month;
+    private String year;
     private static final String TAG = "BudgetFragment";
+    List<Transaction> mTlist;
+    List<Transaction> mFirst;
+    List<BudgetItem> mBudgetItem;
+    Calendar cal;
+    FloatingActionButton fab;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         month = getArguments().getInt("monthInt");
+        cal = Calendar.getInstance();
+        cal.set(Calendar.MONTH, month);
+        year = String.valueOf(cal.get(Calendar.YEAR));
+
     }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
       View v = inflater.inflate(R.layout.fragment_budget, container, false);
 
-      Calendar c = Calendar.getInstance();
-      List<Transaction> mTlist = database.transactionDao().getTransactionMonth(month);
+
+      Log.d(TAG, "onCreateView: The month variable is" + month);
+      String s = "'"+ Integer.toString(month) + "'";
+      Log.d(TAG, "onCreateView: The string is" + s);
+      Log.d(TAG, "onCreateView: The yar is" + year);
+      //List<Transaction> mFirst = database.transactionDao().getTransactionMonth(year,s);
+      mFirst = database.transactionDao().getAllTransactions();
+
+     if (mTlist != null && treeMap != null && mBudgetItem != null) {
+         mTlist.clear();
+         treeMap.clear();
+         mBudgetItem.clear();
+     }
+      mTlist = makeMonthList(mFirst);
+      //mTlist = mapCategories(mFirst);
+
       treeMap = convertList(mTlist);
-      List<BudgetItem> mBudgetItem = makeListItems(treeMap);
+
+      mBudgetItem = makeListItems(treeMap);
 
       expenses = (TextView) v.findViewById(R.id.expenseSummaryTxt);
       incomes = (TextView) v.findViewById(R.id.incomeSummaryTxt);
       summary = (TextView) v.findViewById(R.id.summaryTxt);
-      monthTxt = (TextView) v.findViewById(R.id.monthTxt);
+      monthtext = (TextView) v.findViewById(R.id.monthTxt);
+      fab = (FloatingActionButton) v.findViewById(R.id.fab);
 
-      adapter = new BudgetListAdapter(mBudgetItem);
+      fab.setOnClickListener(new View.OnClickListener(){
+          @Override
+          public void onClick(View view){
+              Intent intent = new Intent(getActivity(), CreateEntry.class);
+              startActivity(intent);
+          }
+
+      });
+
+
+
+      adapter = new BudgetListAdapter(mBudgetItem, new BudgetListAdapter.OnItemClickListener(){
+          @Override
+          public void onItemClick(Transaction transaction) {
+              Calendar c = transaction.getDate();
+              Log.d(TAG, "onItemClick: År " + String.valueOf(c.get(Calendar.YEAR)));
+              Log.d(TAG, "onItemClick: månad" + c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+
+          }
+
+      });
 
       recView = (RecyclerView) v.findViewById(R.id.budgetList);
       recView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -77,8 +129,7 @@ public class BudgetFragment extends Fragment {
   }
 
 
-
-    public void changeSummary(int month){
+    public void changeSummary(int monthIn){
 
         double exp = 0;
         double inc = 0;
@@ -109,8 +160,9 @@ public class BudgetFragment extends Fragment {
         incomes.setText("Incomes: " +sInc);
         summary.setText("Balance " +sTot);
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.MONTH, month);
-        monthTxt.setText(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        c.set(Calendar.MONTH, monthIn);
+        monthtext.setText(c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()) + " " + String.valueOf(c.get(Calendar.YEAR)));
+        year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     }
 
     public static BudgetFragment newInstance(int month) {
@@ -127,7 +179,8 @@ public class BudgetFragment extends Fragment {
         String inc = "Incomes";
         String exp = "Expenses";
         for (int i = 0; i<transactionList.size(); i++){
-            String tMapKey = transactionList.get(i).getCategory().getMainCategory().toString();
+            //Category c = database.categoryDao().getCategory(transactionList.get(i).getCat_id());
+           String tMapKey = transactionList.get(i).getCategory().getMainCategory().toString();
             Log.d(TAG, "testList: KEY: " + tMapKey);
 
             if(tMap.containsKey(inc) && tMapKey.equals("INCOME")){
@@ -181,5 +234,34 @@ public class BudgetFragment extends Fragment {
         }
         return mListItems;
     }
+
+    List<Transaction> mapCategories(List<Transaction> transactionList){
+        for(Transaction t : transactionList){
+            Category c = database.categoryDao().getCategory(t.getCat_id());
+            t.setCategory(c);
+
+        }
+        return transactionList;
+    }
+
+    List<Transaction> makeMonthList(List<Transaction> tList){
+        List<Transaction> tranList = new ArrayList<Transaction>();
+        for (Transaction t : tList){
+            String mYear = String.valueOf(t.getDate().get(Calendar.YEAR));
+            int mMonth = t.getDate().get(Calendar.MONTH);
+            if(year.equals(mYear) && mMonth == month){
+                tranList.add(t);
+
+            }
+        }// End of for loop
+        for(Transaction t : tranList){
+            Category c = database.categoryDao().getCategory(t.getCat_id());
+            t.setCategory(c);
+
+        }
+        return tranList;
+    }
+
+
 
 }

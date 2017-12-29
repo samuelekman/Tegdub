@@ -1,6 +1,7 @@
 package com.samuelekman.tegdub;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
        database = AppDatabase.getDatabase(getApplicationContext());
         //database.categoryDao().addCategory(new Category(MainCategory.ENTERTAINMENT, "Cinema", "ic_attach_money_black_24dp"));
         //database.categoryDao().nukeTable();
+
        ArrayList<Category> cList = (ArrayList<Category>) database.categoryDao().getCategories();
         Log.d(TAG, "onCreate: result size" + cList.size());
 
@@ -113,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         database.categoryDao().addCategory(new Category(MainCategory.TRANSPORTATION, "Public Transportation", "ic_tram_black_24dp"));
 
          }
+
 
 
 }

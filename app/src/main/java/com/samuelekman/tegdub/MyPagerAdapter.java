@@ -2,40 +2,36 @@ package com.samuelekman.tegdub;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by samuel on 2017-12-23.
  */
 
-public class MyPagerAdapter extends FragmentPagerAdapter {
+public class MyPagerAdapter extends FragmentStatePagerAdapter{
+    private static final String TAG = "MyPagerAdapter";
+
 
     public MyPagerAdapter(FragmentManager fragmentManager){
         super(fragmentManager);
     }
 
+
     @Override
     public Fragment getItem(int position){
-        int tempmin;
-        int tempmax;
+        //int tempmin;
+        //int tempmax;
+
+
+
         int inst = Calendar.getInstance().get(Calendar.MONTH);
-        /*
-        if (position == 0){
-            return BudgetFragment.newInstance(inst);
-        }
 
-        if (position < 0){
-            return BudgetFragment.newInstance(inst-1);
-
-        }
-
-        if(position > 1){
-            return BudgetFragment.newInstance(inst+1);
-        }
-        return null;
-        */
         switch(position){
             case 0:
                 return BudgetFragment.newInstance(inst);
@@ -43,16 +39,16 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return BudgetFragment.newInstance(inst+1);
 
-            case 2:
-                return BudgetFragment.newInstance(inst+2);
             default:
                 return null;
         }
+
 
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
+
 }

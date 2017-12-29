@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.samuelekman.tegdub.BudgetActivity;
 import com.samuelekman.tegdub.R;
+import com.samuelekman.tegdub.model.Transaction;
 
 import org.w3c.dom.Text;
 
@@ -21,11 +22,16 @@ import java.util.List;
  */
 
 public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public interface OnItemClickListener {
+        void onItemClick(Transaction transaction);
+    }
 
+    private OnItemClickListener listener;
     private List<BudgetItem> mBudgetItem = new ArrayList<>();
 
-    public BudgetListAdapter(/*BudgetActivity budgetActivity,*/ List<BudgetItem> mBudgetItem){
+    public BudgetListAdapter(/*BudgetActivity budgetActivity,*/ List<BudgetItem> mBudgetItem, OnItemClickListener listener){
         this.mBudgetItem = mBudgetItem;
+        this.listener = listener;
     }
 
     @Override
@@ -85,6 +91,8 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 double sum = budgetExpenseItem.getTransaction().getSum();
                 String sumString = String.valueOf(sum);
                 expenseViewHolder.txtExpCost.setText(sumString);
+                expenseViewHolder.bind(budgetExpenseItem.getTransaction(), listener);
+
 
                 break;
 
@@ -95,6 +103,8 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 double incsum = budgetIncomeItem.getTransaction().getSum();
                 String suString = String.valueOf(incsum);
                 incomeViewHolder.txtIncSum.setText(suString);
+                incomeViewHolder.bind(budgetIncomeItem.getTransaction(), listener);
+
 
                 break;
 
@@ -127,6 +137,13 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
           //  imgInc = (ImageView) itemView.findViewById(R.id.budgetIncomeItemImgView);
             txtIncSum = (TextView) itemView.findViewById(R.id.budgetSumTxtView);
         }
+        public void bind(final Transaction transaction, final OnItemClickListener listener){
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override public void onClick(View v){
+                    listener.onItemClick(transaction);
+                }
+            });
+        }
 
     }
 
@@ -139,6 +156,13 @@ public class BudgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             txtExp = (TextView) itemView.findViewById(R.id.budgetExpenseItemTxtView);
            // imgExp = (ImageView) itemView.findViewById(R.id.budgetExpenseItemImgView);
             txtExpCost = (TextView) itemView.findViewById(R.id.budgetExpenseCostView);
+        }
+        public void bind(final Transaction transaction, final OnItemClickListener listener){
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override public void onClick(View v){
+                    listener.onItemClick(transaction);
+                }
+            });
         }
 
     }

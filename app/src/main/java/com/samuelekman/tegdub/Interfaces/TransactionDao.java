@@ -27,8 +27,9 @@ public interface TransactionDao {
     @Query("select * from transactions where t_id = :transactionId")
     List<Transaction> getTransaction(int transactionId);
 
-    @Query("select * from transactions where strftime('%m', date) = :month")
-    List<Transaction> getTransactionMonth(int month);
+    @Query("select * from transactions where strftime('%Y', date) = :year AND strftime('%m', date) = :month")
+    List<Transaction> getTransactionMonth(String year, String month);
+
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateTransaction(Transaction transaction);

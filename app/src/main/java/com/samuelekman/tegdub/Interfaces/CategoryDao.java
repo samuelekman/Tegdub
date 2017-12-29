@@ -9,6 +9,8 @@ import com.samuelekman.tegdub.model.Category;
 
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 /**
  * Created by samuel on 2017-12-14.
  */
@@ -21,6 +23,12 @@ public interface CategoryDao {
 
     @Query("SELECT * FROM category")
     List<Category> getCategories();
+
+    @Query("SELECT * FROM category WHERE cid = :cat_id")
+    Category getCategory(int cat_id);
+
+    @Query("SELECT * FROM category where subCategory = :sub_cat")
+    Category getCategory(String sub_cat);
 
     @Query("DELETE FROM category")
     public void nukeTable();

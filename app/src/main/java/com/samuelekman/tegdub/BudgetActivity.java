@@ -1,11 +1,14 @@
 package com.samuelekman.tegdub;
 
+import android.graphics.Color;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
@@ -35,7 +38,8 @@ public class BudgetActivity extends AppCompatActivity {
  //RecyclerView recView;
  //BudgetListAdapter adapter;
  //TreeMap <String, List<Transaction>> treeMap;
-    FragmentPagerAdapter fragmentPagerAdapter;
+    FragmentStatePagerAdapter fragmentPagerAdapter;
+    Toolbar toolbar;
 
  @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,10 @@ public class BudgetActivity extends AppCompatActivity {
      ViewPager viewPager = (ViewPager) findViewById(R.id.budgetViewPager);
      fragmentPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
      viewPager.setAdapter(fragmentPagerAdapter);
+
+     toolbar = (Toolbar) findViewById(R.id.toolbar);
+     toolbar.setTitle("Budget");
+     toolbar.setTitleTextColor(Color.WHITE);
         //treeMap = transactionStore.testList();
 
         //the following is just a test print :-:
