@@ -2,8 +2,8 @@ package com.samuelekman.tegdub;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.support.v4.app.FragmentManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,25 +13,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.app.DatePickerDialog;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import com.samuelekman.tegdub.Interfaces.CategoryStore;
-import com.samuelekman.tegdub.Interfaces.TransactionStore;
-import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.Transaction;
-import com.samuelekman.tegdub.utils.AlertUsersDialogFragment;
 import com.samuelekman.tegdub.utils.AppDatabase;
-import com.samuelekman.tegdub.utils.CategoryStorage;
-import com.samuelekman.tegdub.utils.CategoryStoreFactory;
-import com.samuelekman.tegdub.utils.TransactionStoreFactory;
-
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-
-import static com.samuelekman.tegdub.R.id.ammountTextField;
-import static com.samuelekman.tegdub.R.id.categoryTextField;
-import static com.samuelekman.tegdub.R.id.dateTextField;
 
 public class CreateEntry extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     static final int REQUEST_CODE = 1;
@@ -42,15 +29,16 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     private Calendar selectedDate;
     private Button saveButton;
     private static final String TAG = "CreateEntry";
+    Intent mIntent;
     AppDatabase database;
-    CategoryStore categoryStore = CategoryStoreFactory.categoryStore();
-    TransactionStore transactionStore = TransactionStoreFactory.transactionStore();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_entry);
         database =  AppDatabase.getDatabase(this);
+        mIntent = this.getIntent();
 
         categoryTextField = (EditText) findViewById(R.id.categoryTextField);
         categoryTextField.setOnClickListener(new View.OnClickListener(){
@@ -75,25 +63,46 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         saveButton = (Button) findViewById(R.id.saveTransactionButton);
         saveButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if (isInputOk() == false){
-                    Log.d(TAG, "onClick: Säger att det är falskt");
+                if (isInputOk()==false){
+                    /*
+                    Should do something more useful here. TO-DO
+                     */
+                  Toast toast = Toast.makeText(getApplicationContext(), "Please enter all the fields", Toast.LENGTH_SHORT);
+                    toast.show();
 
-                    System.out.println("Category textfiled" + categoryTextField.getText().toString());
-                   // AlertUsersDialogFragment alertUsersDialogFragment = new AlertUsersDialogFragment();
-                    //alertUsersDialogFragment.show(getSupportFragmentManager(), "tag");
                 } else {
-                    Log.d(TAG, "onClick: säger att det är sant och bygger ett objekt");
                     Transaction t = buildTransactionObject();
-                    //transactionStore.addToTransactionList(t);
-                    database.transactionDao().addTransaction(t);
-                    Intent intent = new Intent(CreateEntry.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                    new AddTransactionTask().execute(t);
+                    goBack(mIntent);
                 }
             }
         });
 
     }
+/*
+Method that checks where the CreateEntry Activity where started from.
+Takes you back to the right place, I hope..
+ */
+    public void goBack(Intent intent){
+        if(intent != null) {
+            String fromActivity = intent.getExtras().getString("ActivityID");
+
+            switch(fromActivity){
+
+                case "MainActivity":
+                    Intent intent1 = new Intent(CreateEntry.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent1);
+                    break;
+
+                case "BudgetFragment":
+                    onBackPressed();
+                    break;
+
+            }
+        }
+    }
+
     public void changeDate(Calendar date){
         this.selectedDate = date;
         dateTextField.setText(String.format("%d-%02d-%02d", date.get(Calendar.YEAR), date.get(Calendar.MONTH)+1, date. get(Calendar.DAY_OF_MONTH)));
@@ -104,42 +113,60 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
         startActivityForResult(intent, REQUEST_CODE);
     }
 
+/*
+Method that checks if the result was OK, in my case I don't have to do anything if it wasn't.
+If OK, sets the text in the categoryTextField with the subcategory taken from the SelectCategory Activity.
+ */
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if (requestCode == REQUEST_CODE){
             if (resultCode == Activity.RESULT_OK){
                 String objectData = data.getStringExtra("Dunno");
-                System.out.println("FÅr tillbaka detta"+ objectData);
                 categoryTextField.setText(objectData);
             }
-            // HÄr kommer resultatet parsas
+
         }
     }
 
     //This method reads the UserInput and creates a transaction object
     public Transaction buildTransactionObject(){
 
-        Transaction transaction = new Transaction(
+        return  new Transaction(
                 Double.parseDouble(sumTextField.getText().toString()),
                 selectedDate,
                 noteTextField.getText().toString(),
                 database.categoryDao().getCategory(categoryTextField.getText().toString()).getCid()
 
         );
-        return transaction;
+
     }
 
-    //Method that checks if the UserInput is OK (don't want to build TransactionObjects with null values)
-    public boolean isInputOk() {
+    /*Method that checks if the UserInput is OK (don't want to build TransactionObjects with null values)
+        This method should also check if the input is wrong (Letters in sum), not implemented yet.
+     */
+    public boolean isInputOk() {/*
         String sum = sumTextField.getText().toString();
         String category = dateTextField.getText().toString();
         if (!sum.isEmpty() || !category.isEmpty()) {
-            System.out.println("Kommer in i att det är OK");
             return true;
         } else {
-            System.out.println("Säger att det är falskt");
+            return false;
+        }*/
+        if(isEmpty(sumTextField) || isEmpty(dateTextField)){
             return false;
         }
+        return true;
     }
+
+    /*
+    Method for checking if EditTexts are empty.
+     */
+    public boolean isEmpty(EditText text){
+        if(text.getText().toString().trim().length() >0){
+            return false;
+        }
+        return true;
+    }
+
     public void showDatePicker(){
         DatePickerFragment newFragment = DatePickerFragment.newInstance(selectedDate);
             newFragment.setParent(this);
@@ -186,6 +213,20 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             this.parent = fragment;
         }
 
+    }
+
+    /*
+    An inner class for adding Transaction to database.
+    Should handle exceptions, it doesn't...
+     */
+    public class AddTransactionTask extends AsyncTask<Transaction, Void, Void>{
+
+
+        @Override
+        protected Void doInBackground(Transaction... transactions) {
+            database.transactionDao().addTransactions(transactions);
+            return null;
+        }
     }
 
  }

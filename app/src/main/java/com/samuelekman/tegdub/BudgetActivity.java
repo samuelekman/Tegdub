@@ -49,6 +49,7 @@ public class BudgetActivity extends AppCompatActivity {
      fragmentPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
      viewPager.setAdapter(fragmentPagerAdapter);
 
+
      toolbar = (Toolbar) findViewById(R.id.toolbar);
      toolbar.setTitle("Budget");
      toolbar.setTitleTextColor(Color.WHITE);

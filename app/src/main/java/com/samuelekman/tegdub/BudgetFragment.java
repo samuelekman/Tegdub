@@ -1,14 +1,9 @@
 package com.samuelekman.tegdub;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +22,7 @@ import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.MainCategory;
 import com.samuelekman.tegdub.model.Transaction;
 import com.samuelekman.tegdub.utils.AppDatabase;
+import com.samuelekman.tegdub.utils.GetTransactionsTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,15 +31,20 @@ import java.util.Locale;
 import java.util.TreeMap;
 
 
+/*
+ The fragment that is inflated within the ViewPager at the BudgetActivity.
+
+ */
+
 public class BudgetFragment extends Fragment {
-    AppDatabase database = AppDatabase.getDatabase(getContext());
-    RecyclerView recView;
-    BudgetListAdapter adapter;
+    private AppDatabase database = AppDatabase.getDatabase(getContext());
+    private RecyclerView recView;
+    private BudgetListAdapter adapter;
     private TreeMap<String, List<Transaction>> treeMap;
-    TextView expenses;
-    TextView incomes;
-    TextView summary;
-    TextView monthtext;
+    private TextView expenses;
+    private TextView incomes;
+    private TextView summary;
+    private TextView monthtext;
 
 
     private int month;
@@ -71,12 +72,11 @@ public class BudgetFragment extends Fragment {
       View v = inflater.inflate(R.layout.fragment_budget, container, false);
 
 
-      Log.d(TAG, "onCreateView: The month variable is" + month);
-      String s = "'"+ Integer.toString(month) + "'";
-      Log.d(TAG, "onCreateView: The string is" + s);
-      Log.d(TAG, "onCreateView: The yar is" + year);
-      //List<Transaction> mFirst = database.transactionDao().getTransactionMonth(year,s);
       mFirst = database.transactionDao().getAllTransactions();
+      /*
+      Should not do the above (use mainThread), no Time to fix it...
+      mFirst = new GetTransactionsTask(getContext()).execute().get();
+      */
 
      if (mTlist != null && treeMap != null && mBudgetItem != null) {
          mTlist.clear();
@@ -84,7 +84,6 @@ public class BudgetFragment extends Fragment {
          mBudgetItem.clear();
      }
       mTlist = makeMonthList(mFirst);
-      //mTlist = mapCategories(mFirst);
 
       treeMap = convertList(mTlist);
 
@@ -100,6 +99,7 @@ public class BudgetFragment extends Fragment {
           @Override
           public void onClick(View view){
               Intent intent = new Intent(getActivity(), CreateEntry.class);
+              intent.putExtra("ActivityID", "BudgetFragment");
               startActivity(intent);
           }
 
@@ -128,6 +128,9 @@ public class BudgetFragment extends Fragment {
 
   }
 
+    /*
+    This method changes the Summary at the top of the view.
+     */
 
     public void changeSummary(int monthIn){
 
@@ -149,7 +152,7 @@ public class BudgetFragment extends Fragment {
 
             }
         } else {
-            // THis is an error, need to handle this.
+            // There are no transactions, should probably say so in the UI (RecyclerView).
         }
         tot = inc-exp;
         String sExpence = String.valueOf(exp);
@@ -165,6 +168,10 @@ public class BudgetFragment extends Fragment {
         year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     }
 
+    /*
+     Method that creates a new instance of the class.
+     Takes a int as a parameter (calendar.MONTH)
+     */
     public static BudgetFragment newInstance(int month) {
         BudgetFragment budgetFragment = new BudgetFragment();
         Bundle args = new Bundle();
@@ -173,27 +180,38 @@ public class BudgetFragment extends Fragment {
         return budgetFragment;
     }
 
+    /*
+    The following method aint pretty..
+    It takes a list of transactions as argument and then returns a TreeMap with Strings as Keys. either Income or Expenses.
+    The TreeMap is later used to make budgetItems.
+     */
     public TreeMap<String, List<Transaction>> convertList(List<Transaction> transactionList){
 
         TreeMap<String, List<Transaction>> tMap = new TreeMap<>();
         String inc = "Incomes";
         String exp = "Expenses";
         for (int i = 0; i<transactionList.size(); i++){
-            //Category c = database.categoryDao().getCategory(transactionList.get(i).getCat_id());
+
            String tMapKey = transactionList.get(i).getCategory().getMainCategory().toString();
             Log.d(TAG, "testList: KEY: " + tMapKey);
-
+            /*
+            Checks if the transactions mainCategory already is a key within the treeMap.
+            If true put the transaction into correct key (Income or Expenses)
+             */
             if(tMap.containsKey(inc) && tMapKey.equals("INCOME")){
                 tMap.get(inc).add(transactionList.get(i));
             } else if(tMap.containsKey(exp) && !tMapKey.equals("INCOME")) {
                 tMap.get(exp).add(transactionList.get(i));
             } else {
-                Log.d(TAG, "testList: i else, key = " + tMapKey);
 
-                if (tMapKey.equals(new String("INCOME"))) {
+                /*
+                The transactions mainCategory isn't present within the TreeMap, add it.
+                 */
+
+                if (tMapKey.equals("INCOME")) {
                     List<Transaction> list = new ArrayList<>();
                     list.add(transactionList.get(i));
-                    Log.d(TAG, "testList: säger att income = true");
+
                     tMap.put(inc, list);
 
                 } else {
@@ -208,6 +226,9 @@ public class BudgetFragment extends Fragment {
         return tMap;
     }
 
+    /*
+    The following method takes a TreeMap as argument, loops through the TreeMap and returns a list with BudgetItems.
+     */
     public List<BudgetItem> makeListItems(TreeMap<String, List<Transaction>> tMap){
         List<BudgetItem> mListItems = new ArrayList<>();
 
@@ -235,17 +256,14 @@ public class BudgetFragment extends Fragment {
         return mListItems;
     }
 
-    List<Transaction> mapCategories(List<Transaction> transactionList){
-        for(Transaction t : transactionList){
-            Category c = database.categoryDao().getCategory(t.getCat_id());
-            t.setCategory(c);
-
-        }
-        return transactionList;
-    }
+    /*
+    The following method is my QuickFix for not being able to get transactions for a certain month (read my report).
+    It checks the list of transactions too see if the year and date on each transactions is this year and this month, if true add it to the list.
+    The second for loop maps transactions to the correct Category.
+     */
 
     List<Transaction> makeMonthList(List<Transaction> tList){
-        List<Transaction> tranList = new ArrayList<Transaction>();
+        List<Transaction> tranList = new ArrayList<>();
         for (Transaction t : tList){
             String mYear = String.valueOf(t.getDate().get(Calendar.YEAR));
             int mMonth = t.getDate().get(Calendar.MONTH);

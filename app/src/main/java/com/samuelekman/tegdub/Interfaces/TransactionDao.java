@@ -21,6 +21,9 @@ public interface TransactionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addTransaction(Transaction transaction);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void addTransactions(Transaction... transactions);
+
     @Query("SELECT * FROM transactions")
     List<Transaction> getAllTransactions();
 

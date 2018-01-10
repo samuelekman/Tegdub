@@ -16,7 +16,8 @@ import java.util.List;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter{
     private static final String TAG = "MyPagerAdapter";
-
+    public static int pos = 0;
+   
 
     public MyPagerAdapter(FragmentManager fragmentManager){
         super(fragmentManager);
@@ -25,8 +26,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position){
-        //int tempmin;
-        //int tempmax;
+
 
 
 
@@ -51,4 +51,8 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter{
         return 2;
     }
 
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }
