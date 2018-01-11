@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.samuelekman.tegdub.model.Transaction;
+import com.samuelekman.tegdub.utils.Storage.AppDatabase;
 
 import java.util.List;
 

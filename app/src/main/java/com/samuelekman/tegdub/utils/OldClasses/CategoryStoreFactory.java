@@ -1,4 +1,4 @@
-package com.samuelekman.tegdub.utils;
+package com.samuelekman.tegdub.utils.OldClasses;
 
 import com.samuelekman.tegdub.Interfaces.CategoryStore;
 

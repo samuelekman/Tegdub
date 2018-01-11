@@ -1,4 +1,4 @@
-package com.samuelekman.tegdub.utils;
+package com.samuelekman.tegdub.utils.OldClasses;
 
 import android.util.Log;
 
@@ -9,7 +9,6 @@ import com.samuelekman.tegdub.model.Transaction;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.List;
 

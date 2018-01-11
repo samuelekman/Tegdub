@@ -1,10 +1,10 @@
 package com.samuelekman.tegdub.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
 import com.samuelekman.tegdub.model.Category;
+import com.samuelekman.tegdub.utils.Storage.AppDatabase;
 
 import java.util.List;
 

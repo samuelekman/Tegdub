@@ -34,10 +34,10 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter{
 
         switch(position){
             case 0:
-                return BudgetFragment.newInstance(inst);
+                return BudgetFragment.newInstance(Calendar.getInstance().get(Calendar.MONTH));
 
             case 1:
-                return BudgetFragment.newInstance(inst+1);
+                return BudgetFragment.newInstance(Calendar.getInstance().get(Calendar.MONTH) + 1);
 
             default:
                 return null;
@@ -46,6 +46,10 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter{
 
     }
 
+    /*
+     * Tried multiple times adding fragments dynamically, with a list of fragments. (should be able to swipe through all months)
+     * Didn't get it to work, only allows 2 atm.
+     */
     @Override
     public int getCount() {
         return 2;

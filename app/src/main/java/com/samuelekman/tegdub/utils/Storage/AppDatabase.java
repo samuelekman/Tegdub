@@ -1,16 +1,13 @@
-package com.samuelekman.tegdub.utils;
+package com.samuelekman.tegdub.utils.Storage;
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
-import android.util.Log;
 
 import com.samuelekman.tegdub.Interfaces.CategoryDao;
 import com.samuelekman.tegdub.Interfaces.TransactionDao;
 import com.samuelekman.tegdub.model.Category;
-import com.samuelekman.tegdub.model.MainCategory;
 import com.samuelekman.tegdub.model.Transaction;
 
 /**

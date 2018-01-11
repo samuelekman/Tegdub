@@ -11,7 +11,7 @@ import com.samuelekman.tegdub.CategoryList.GroupedListAdapter;
 import com.samuelekman.tegdub.CategoryList.HeaderItem;
 import com.samuelekman.tegdub.CategoryList.ListItem;
 import com.samuelekman.tegdub.model.Category;
-import com.samuelekman.tegdub.utils.AppDatabase;
+import com.samuelekman.tegdub.utils.Storage.AppDatabase;
 import com.samuelekman.tegdub.utils.GetCategoriesTask;
 
 import java.util.ArrayList;

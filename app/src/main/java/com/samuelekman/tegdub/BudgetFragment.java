@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.samuelekman.tegdub.BudgetList.BudgetExpenseHeaderItem;
 import com.samuelekman.tegdub.BudgetList.BudgetExpenseItem;
@@ -21,8 +22,9 @@ import com.samuelekman.tegdub.BudgetList.BudgetListAdapter;
 import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.MainCategory;
 import com.samuelekman.tegdub.model.Transaction;
-import com.samuelekman.tegdub.utils.AppDatabase;
-import com.samuelekman.tegdub.utils.GetTransactionsTask;
+import com.samuelekman.tegdub.utils.Storage.AppDatabase;
+import com.samuelekman.tegdub.utils.Dialogs.DeleteDialog;
+import com.samuelekman.tegdub.utils.Dialogs.TransactionDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +38,7 @@ import java.util.TreeMap;
 
  */
 
-public class BudgetFragment extends Fragment {
+public class BudgetFragment extends Fragment implements DeleteDialog.ButtonPressedDialogListener{
     private AppDatabase database = AppDatabase.getDatabase(getContext());
     private RecyclerView recView;
     private BudgetListAdapter adapter;
@@ -110,6 +112,8 @@ public class BudgetFragment extends Fragment {
       adapter = new BudgetListAdapter(mBudgetItem, new BudgetListAdapter.OnItemClickListener(){
           @Override
           public void onItemClick(Transaction transaction) {
+              TransactionDialog transactionDialog = new TransactionDialog();
+              transactionDialog.showDialog(getActivity(), "Theese are your choices, choose wisely");
               Calendar c = transaction.getDate();
               Log.d(TAG, "onItemClick: År " + String.valueOf(c.get(Calendar.YEAR)));
               Log.d(TAG, "onItemClick: månad" + c.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
@@ -280,6 +284,10 @@ public class BudgetFragment extends Fragment {
         return tranList;
     }
 
+    @Override
+    public void onFinishDialog(String buttonpressed){
+        Toast.makeText(getActivity(), "Button pressed" + buttonpressed, Toast.LENGTH_SHORT).show();
+    }
 
 
 }

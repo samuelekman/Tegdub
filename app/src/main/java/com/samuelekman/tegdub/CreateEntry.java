@@ -3,20 +3,21 @@ package com.samuelekman.tegdub;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.app.DatePickerDialog;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.samuelekman.tegdub.model.Transaction;
-import com.samuelekman.tegdub.utils.AppDatabase;
+import com.samuelekman.tegdub.utils.Storage.AppDatabase;
 import java.util.Calendar;
 
 
@@ -27,7 +28,8 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
     private EditText sumTextField;
     private EditText noteTextField;
     private Calendar selectedDate;
-    private Button saveButton;
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
     private static final String TAG = "CreateEntry";
     Intent mIntent;
     AppDatabase database;
@@ -47,7 +49,7 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
             }
         });
         Calendar c = Calendar.getInstance();
-        System.out.println(c.toString());
+
         dateTextField = (EditText) findViewById(R.id.dateTextField);
         changeDate(c);
         dateTextField.setOnClickListener(new View.OnClickListener(){
@@ -60,14 +62,18 @@ public class CreateEntry extends AppCompatActivity implements DatePickerDialog.O
 
         noteTextField = (EditText) findViewById(R.id.noteTextField);
 
-        saveButton = (Button) findViewById(R.id.saveTransactionButton);
-        saveButton.setOnClickListener(new View.OnClickListener(){
+        toolbar = (Toolbar) findViewById(R.id.toolbarEntry);
+        toolbar.setTitle("Create Transaction");
+        toolbar.setTitleTextColor(Color.WHITE);
+
+        fab = (FloatingActionButton) findViewById(R.id.fabEntry);
+        fab.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 if (isInputOk()==false){
                     /*
                     Should do something more useful here. TO-DO
                      */
-                  Toast toast = Toast.makeText(getApplicationContext(), "Please enter all the fields", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getApplicationContext(), "Please enter all the fields", Toast.LENGTH_SHORT);
                     toast.show();
 
                 } else {
@@ -143,14 +149,7 @@ If OK, sets the text in the categoryTextField with the subcategory taken from th
     /*Method that checks if the UserInput is OK (don't want to build TransactionObjects with null values)
         This method should also check if the input is wrong (Letters in sum), not implemented yet.
      */
-    public boolean isInputOk() {/*
-        String sum = sumTextField.getText().toString();
-        String category = dateTextField.getText().toString();
-        if (!sum.isEmpty() || !category.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }*/
+    public boolean isInputOk() {
         if(isEmpty(sumTextField) || isEmpty(dateTextField)){
             return false;
         }

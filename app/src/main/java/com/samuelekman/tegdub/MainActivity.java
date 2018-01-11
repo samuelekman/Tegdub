@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.samuelekman.tegdub.model.Category;
 import com.samuelekman.tegdub.model.MainCategory;
-import com.samuelekman.tegdub.utils.AppDatabase;
+import com.samuelekman.tegdub.utils.Storage.AppDatabase;
 
 import java.util.ArrayList;
 
